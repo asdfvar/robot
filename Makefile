@@ -1,7 +1,7 @@
 CC = g++
 FLAGS = -Wall
 
-OBJ = main.o robot.o
+OBJ = main.o robot.o update.o
 EXE = robot
 
 all: $(EXE)
@@ -13,6 +13,9 @@ main.o: main.cpp
 
 robot.o: robot.cpp robot.h
 	$(CC) $(FLAGS) robot.cpp robot.h -c
+
+update.o: update.cpp robot.h
+	$(CC) $(FLAGS) -lm update.cpp -c
 
 clean:
 	rm $(OBJ) $(EXE)

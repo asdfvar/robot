@@ -3,6 +3,8 @@
 
 class robot{
    public:
+      float posx;   // x-position
+      float posy;   // y-position
 
      /****************
       * Constructors *
@@ -16,12 +18,16 @@ class robot{
       * Functions *
       *************/
 
+      int update(float dt);
+
+      float getposx();
+      float getposy();
+
    private:
 
-      float posx;   // Robot x-position
-      float posy;   // Robot y-position
-      float dir;    // Robot direction (radians)
-      float speed;   // Robot speed
+      float dir;    // direction (radians)
+      float speed;  // speed
+      float omega;  // rotation rate (radians/second)
 };
 
 #endif
