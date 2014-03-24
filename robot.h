@@ -24,6 +24,7 @@ class robot{
       int drawpath(float *arcx1,  float *arcy1,\
                     float *arcx2, float *arcy2,
                     int N);
+      int drawrobot();
 
    private:
    

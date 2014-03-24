@@ -10,7 +10,7 @@
 
 float *mem = (float*) calloc(80, sizeof(float));
 float mm2win = 0.0001; // conversion factor to go from mm to 1 unit
-robot rob;
+robot rob(0.2, 0.3, 1.0);
 
 void idle(void){
    glutPostRedisplay();
@@ -39,7 +39,13 @@ void move(void){
    }
    glPopMatrix();
 
+   rob.drawrobot();
+
    glFlush();
+}
+
+void keyboardDown(unsigned char key, int x, int y){
+
 }
 
 int main(int argc, char** argv){
@@ -58,7 +64,7 @@ int main(int argc, char** argv){
 
    glutDisplayFunc(move);
 //   glutKeyboardUpFunc(keyboardUp);
-//   glutKeyboardFunc(keyboardDown);
+   glutKeyboardFunc(keyboardDown);
    glutIdleFunc(idle);
 
    glutMainLoop();
