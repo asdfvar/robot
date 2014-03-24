@@ -6,10 +6,10 @@ EXE = robot
 
 all: $(EXE)
 $(EXE): $(OBJ)
-	$(CC) $(FLAGS) $(OBJ) -o $(EXE)
+	$(CC) $(FLAGS) $(OBJ) -lglut -o $(EXE)
 
 main.o: main.cpp robot.h
-	$(CC) $(FLAGS) main.cpp -c
+	$(CC) $(FLAGS) -lglut -lm main.cpp -c
 
 robot.o: robot.cpp robot.h
 	$(CC) $(FLAGS) robot.cpp -c
