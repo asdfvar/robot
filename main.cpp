@@ -10,36 +10,17 @@
 
 float *mem = (float*) calloc(80, sizeof(float));
 float mm2win = 0.0001; // conversion factor to go from mm to 1 unit
-robot rob(0.0, 0.0, 0.0);
+robot rob(0.0, 0.0, 1.57);
 
 void idle(void){
+   rob.update(0.04);
    glutPostRedisplay();
 }
 
 void move(void){
-   int i,N=20;
-   float *arcx1 = mem;
-   float *arcy1 = mem + N;
-   float *arcx2 = mem + 2*N;
-   float *arcy2 = mem + 3*N;
-
-   rob.update(0.04);
-   rob.drawpath(arcx1, arcy1, arcx2, arcy2, N);
-
    glClear(GL_COLOR_BUFFER_BIT);
-   glPushMatrix();
-   glColor3ub(255, 255, 255);
-   glTranslatef(0.0, 0.0, 0.0);
-   for (i = 0; i < N-1; i++){
-      glBegin(GL_POLYGON);
-      glVertex3f(arcx1[i], arcy1[i], 0.0);
-      glVertex3f(arcx1[i+1], arcy1[i+1], 0.0);
-      glVertex3f(arcx2[i+1], arcy2[i+1], 0.0);
-      glVertex3f(arcx2[i], arcy2[i], 0.0);
-      glEnd();
-   }
-   glPopMatrix();
 
+   rob.drawpath();
    rob.drawrobot();
 
    glFlush();

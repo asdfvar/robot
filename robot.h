@@ -21,9 +21,7 @@ class robot{
       float getposx();
       float getposy();
 
-      int drawpath(float *arcx1,  float *arcy1,\
-                    float *arcx2, float *arcy2,
-                    int N);
+      int drawpath();
       int drawrobot();
 
       int move(unsigned char key);
@@ -42,7 +40,7 @@ class robot{
       *******************/
 
       float thetalen;  // length of projected visual path (radians)
-      float r1,r2;     // inner and outer radius for arc path (mm)
+      float r;         // robot path radius
       float th, dth;   // angle parameters used
       
 };
