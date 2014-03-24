@@ -26,6 +26,9 @@ class robot{
                     int N);
       int drawrobot();
 
+      int move(unsigned char key);
+      int unmove(unsigned char key);
+
    private:
    
       float posx;   // x-position

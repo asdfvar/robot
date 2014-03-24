@@ -10,7 +10,7 @@
 
 float *mem = (float*) calloc(80, sizeof(float));
 float mm2win = 0.0001; // conversion factor to go from mm to 1 unit
-robot rob(0.2, 0.3, 1.0);
+robot rob(0.0, 0.0, 0.0);
 
 void idle(void){
    glutPostRedisplay();
@@ -23,6 +23,7 @@ void move(void){
    float *arcx2 = mem + 2*N;
    float *arcy2 = mem + 3*N;
 
+   rob.update(0.04);
    rob.drawpath(arcx1, arcy1, arcx2, arcy2, N);
 
    glClear(GL_COLOR_BUFFER_BIT);
@@ -45,7 +46,10 @@ void move(void){
 }
 
 void keyboardDown(unsigned char key, int x, int y){
-
+   rob.move(key);
+}
+void keyboardUp(unsigned char key, int x, int y){
+   rob.unmove(key);
 }
 
 int main(int argc, char** argv){
@@ -63,7 +67,7 @@ int main(int argc, char** argv){
    glutCreateWindow("OpenGL Example");
 
    glutDisplayFunc(move);
-//   glutKeyboardUpFunc(keyboardUp);
+   glutKeyboardUpFunc(keyboardUp);
    glutKeyboardFunc(keyboardDown);
    glutIdleFunc(idle);
 

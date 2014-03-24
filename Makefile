@@ -1,7 +1,7 @@
 CC = g++
 FLAGS = -Wall
 
-OBJ = main.o robot.o update.o draw.o map.o
+OBJ = main.o robot.o update.o move.o draw.o map.o
 EXE = robot
 
 all: $(EXE)
@@ -16,6 +16,9 @@ robot.o: robot.cpp robot.h
 
 update.o: update.cpp robot.h
 	$(CC) $(FLAGS) -lm update.cpp -c
+
+move.o: move.cpp robot.h
+	$(CC) $(FLAGS) -lm move.cpp -c
 
 draw.o: draw.cpp robot.h
 	$(CC) $(FLAGS) -lm -lglut draw.cpp -c

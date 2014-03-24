@@ -1,12 +1,12 @@
 #include "robot.h"
 #include <math.h>
 
-enum{SUC = 0, ERR = -1};
-
 int robot::update(float dt){
 
-   posy += speed*cosf(dir)*dt;
+   posx += speed*cosf(dir)*dt;
    posy += speed*sinf(dir)*dt;
 
-   return SUC;
+   dir += omega*dt;
+
+   return 0;
 }
