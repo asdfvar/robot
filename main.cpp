@@ -8,38 +8,24 @@
 #include "map.h"
 #include <math.h>
 
+float *mem = (float*) calloc(80, sizeof(float));
+float mm2win = 0.0001; // conversion factor to go from mm to 1 unit
+robot rob;
+
 void idle(void){
    glutPostRedisplay();
 }
 
 void move(void){
-   float thetalen = 2.5;
-   float r1,r2;
-   float th, dth;
-   int i, N = 20;
-   float *arcx1 = (float*) calloc(2*N, sizeof(float));
-   float *arcy1 = (float*) calloc(2*N, sizeof(float));
-   float *arcx2 = arcx1 + N;
-   float *arcy2 = arcy1 + N;
+   int i,N=20;
+   float *arcx1 = mem;
+   float *arcy1 = mem + N;
+   float *arcx2 = mem + 2*N;
+   float *arcy2 = mem + 3*N;
 
-   r1 = 0.25; r2 = 0.75;
-   dth = (thetalen - 0.0)/((float)(N-1));
-
-   th = 0.0;
-   for (i = 0; i < N; i++){
-      arcx1[i] = r1*cosf(th);
-      arcy1[i] = r1*sinf(th);
-      th += dth;
-   }
-   th = 0.0;
-   for (i = 0; i < N; i++){
-      arcx2[i] = r2*cosf(th);
-      arcy2[i] = r2*sinf(th);
-      th += dth;
-   }
+   rob.drawpath(arcx1, arcy1, arcx2, arcy2, N);
 
    glClear(GL_COLOR_BUFFER_BIT);
-
    glPushMatrix();
    glColor3ub(255, 255, 255);
    glTranslatef(0.0, 0.0, 0.0);
@@ -59,7 +45,6 @@ void move(void){
 int main(int argc, char** argv){
 
    map *MAP = new map();
-   robot rob;
 
    MAP->hello();
 
