@@ -3,6 +3,7 @@ FLAGS = -Wall
 
 OBJ = main.o robot.o update.o draw.o map.o
 EXE = robot
+TRASH = robot.h.gch
 
 all: $(EXE)
 $(EXE): $(OBJ)
@@ -15,7 +16,7 @@ robot.o: robot.cpp robot.h
 	$(CC) $(FLAGS) robot.cpp -c
 
 update.o: update.cpp robot.h
-	$(CC) $(FLAGS) -lm update.cpp -c
+	$(CC) $(FLAGS) -lm robot.h update.cpp -c
 
 draw.o: draw.cpp robot.h
 	$(CC) $(FLAGS) -lm -lglut draw.cpp -c
@@ -24,4 +25,4 @@ map.o: map.cpp map.h
 	$(CC) $(FLAGS) map.cpp -c
 
 clean:
-	rm $(OBJ) $(EXE)
+	rm $(OBJ) $(EXE) $(TRASH)
