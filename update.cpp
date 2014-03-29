@@ -1,12 +1,15 @@
 #include "robot.h"
 #include <math.h>
 #include <stdlib.h>
+#include <iostream>
 
 #define SPEED 0.01
 #define OMEGA 0.1
 
 #define dSPEED 0.00002
 #define dOMEGA 0.0002
+
+float abs(float);
 
 enum {DEF = 0, MOV};
 
@@ -16,17 +19,21 @@ static float tturn = 0.0;
 
 int robot::update(float dt){
 
-#if 1
    if (mode == MOV){
       speed += mmove*dSPEED;
       omega += tturn*dOMEGA;
    }
-#endif
 
    posx += speed*cosf(dir)*dt;
    posy += speed*sinf(dir)*dt;
 
    dir += omega*dt;
+
+   if (omega > 0.001 || omega < -0.001){
+      radius = abs(speed/omega);
+      is_strait = false;
+   } else
+      is_strait = true;
 
    return 0;
 }
@@ -108,4 +115,8 @@ int robot::unmove(unsigned char key){
    }
 
    return 0;
+}
+
+float abs(float arg){
+   return arg > 0.0 ? arg : -arg;
 }

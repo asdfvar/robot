@@ -8,8 +8,6 @@
 #include "map.h"
 #include <math.h>
 
-float *mem = (float*) calloc(80, sizeof(float));
-float mm2win = 0.0001; // conversion factor to go from mm to 1 unit
 robot rob(0.0, 0.0, 1.57);
 
 void idle(void){

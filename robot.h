@@ -35,13 +35,16 @@ class robot{
       float speed;  // speed
       float omega;  // rotation rate (radians/second)
 
+      float diameter; // robot diameter
+
      /*******************
       * visual arc path *
       *******************/
 
       float thetalen;  // length of projected visual path (radians)
-      float r;         // robot path radius
-      float th, dth;   // angle parameters used
+      float radius;    // robot path radius
+      bool  is_strait; // the case when the radius --> inf
+      float th;   // angle parameters used
       
 };
 
