@@ -9,6 +9,8 @@
 #define dSPEED 0.00002
 #define dOMEGA 0.0002
 
+#define ABS(A) (A > 0.0 ? A : -A)
+
 float abs(float);
 
 enum {DEF = 0, MOV};
@@ -22,6 +24,12 @@ int robot::update(float dt){
    if (mode == MOV){
       speed += mmove*dSPEED;
       omega += tturn*dOMEGA;
+      if (((omega > 0.0 && speed > 0.0) || (omega < 0.0 && speed < 0.0)) \
+            && ABS(speed) >= MINSPEED && !is_strait)
+         omega += mmove*dSPEED/radius;
+      if (((omega < 0.0 && speed > 0.0) || (omega > 0.0 && speed < 0.0)) \
+            && ABS(speed) >= MINSPEED && !is_strait)
+         omega -= mmove*dSPEED/radius;
    }
 
    posx += speed*cosf(dir)*dt;
@@ -29,7 +37,7 @@ int robot::update(float dt){
 
    dir += omega*dt;
 
-   if (omega > 0.001 || omega < -0.001){
+   if (omega > MINOMEGA || omega < -MINOMEGA){
       radius = abs(speed/omega);
       is_strait = false;
    } else
@@ -37,6 +45,10 @@ int robot::update(float dt){
 
    return 0;
 }
+
+/********
+ * move *
+ ********/
 
 int robot::move(unsigned char key){
 

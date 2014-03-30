@@ -9,6 +9,8 @@
 #include <GL/glu.h>
 #include <GL/gl.h>
 
+#define ABS(A) (A > 0.0 ? A : -A)
+
 int robot::drawpath(){
 
    int i,N = 20;
@@ -18,30 +20,42 @@ int robot::drawpath(){
    float tmp;
    float dirp = dir - 1.57079632679;
    float dth;
-   const float dp = 0.01;
+   float dp;
    float p;
 
-   r1 = radius - diameter/2.0; r2 = radius + diameter/2.0;
-   thetalen = 2.0;
-   dth = (thetalen - 0.0)/((float)(N-1));
+   if (!is_strait){
+      r1 = radius - diameter/2.0; r2 = radius + diameter/2.0;
+      thetalen = 20*speed/radius;
+      dth = (thetalen - 0.0)/((float)(N-1));
+   } else {
+      dp = speed;
+   }
 
-   // draw the arch of the path
+  /*****************************
+   * draw the arch of the path *
+   *****************************/
+
+   // if the robot is not moving, exit
+   if (speed < MINSPEED && speed > -MINSPEED)
+      return -1;
+
+   // get the arc
    if (is_strait){
-      for (i = 0, p = 0.0; p < 0.2; p += dp, i++){
-         arcx1[i] = -r1;
-         arcx2[i] = r1;
+      for (i = 0, p = 0.0; i < N; p += dp, i++){
+         arcx1[i] = -diameter/2.0;
+         arcx2[i] = diameter/2.0;
          arcy1[i] = p;
          arcy2[i] = p;
       }
    } else {
-      if (omega > 0.0){
+      if ((omega > 0.0 && speed > 0.0) || (omega < 0.0 && speed < 0.0)){
          for (i = 0, th = 0.0; i < N; i++, th += dth){
             arcx1[i] = r1*cosf(th);
             arcy1[i] = r1*sinf(th);
             arcx2[i] = r2*cosf(th);
             arcy2[i] = r2*sinf(th);
          }
-      } else if (omega < 0.0) {
+      } else if ((omega < 0.0 && speed > 0.0) || (omega > 0.0 && speed < 0.0)) {
          for (i = 0, th = 3.14159; i < N; i++, th -= dth){
             arcx1[i] = r1*cosf(th);
             arcy1[i] = r1*sinf(th);
@@ -51,6 +65,7 @@ int robot::drawpath(){
       }
    }
 
+#if 1
    // rotate the path to the robot direction
    for (i = 0; i < N; i++){
       tmp = arcx1[i]*cosf(dirp) - arcy1[i]*sinf(dirp);
@@ -61,16 +76,16 @@ int robot::drawpath(){
       arcx2[i] = tmp;
    }
 
+   // translate to origin
    if (!is_strait){
-      // translate to origin
-      if (omega > 0.0){
+      if ((omega > 0.0 && speed > 0.0) || (omega < 0.0 && speed < 0.0)){
          for (i = 0; i < N; i++){
             arcx1[i] -= radius*cosf(dirp);
             arcx2[i] -= radius*cosf(dirp);
             arcy1[i] -= radius*sinf(dirp);
             arcy2[i] -= radius*sinf(dirp);
          }
-      } else if (omega < 0.0) {
+      } else if ((omega < 0.0 && speed > 0.0) || (omega > 0.0 && speed < 0.0)) {
          for (i = 0; i < N; i++){
             arcx1[i] += radius*cosf(dirp);
             arcx2[i] += radius*cosf(dirp);
@@ -87,6 +102,7 @@ int robot::drawpath(){
       arcy1[i] += posy;
       arcy2[i] += posy;
    }
+#endif
 
    glColor3ub(255, 255, 255);
    for (i = 0; i < N-1; i++){

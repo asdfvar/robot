@@ -1,6 +1,9 @@
 #ifndef _ROBOT_H_
 #define _ROBOT_H_
 
+#define MINOMEGA 0.0001
+#define MINSPEED 0.0001
+
 class robot{
    public:
 
