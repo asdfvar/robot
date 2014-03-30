@@ -15,6 +15,10 @@ void idle(void){
    glutPostRedisplay();
 }
 
+/********
+ * move *
+ ********/
+
 void move(void){
    glClear(GL_COLOR_BUFFER_BIT);
 
@@ -24,12 +28,25 @@ void move(void){
    glFlush();
 }
 
+/*****************
+ * keyboard Down *
+ *****************/
+
 void keyboardDown(unsigned char key, int x, int y){
    rob.move(key);
 }
+
+/***************
+ * keyboard Up *
+ ***************/
+
 void keyboardUp(unsigned char key, int x, int y){
    rob.unmove(key);
 }
+
+/********
+ * main *
+ ********/
 
 int main(int argc, char** argv){
 
