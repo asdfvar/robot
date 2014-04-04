@@ -52,31 +52,41 @@ int robot::update(float dt){
 
 int robot::move(unsigned char key){
 
-   switch (key){
-      case 'w':
-         if (mode == MOV)
-            mmove = 1.0;
-         else
+   if (mode == DEF){
+      switch (key){
+         case 'w':
             speed = SPEED;
-         break;
-      case 'a':
-         if (mode == MOV)
-            tturn = 1.0;
-         else
+            break;
+         case 'a':
             omega = OMEGA;
-         break;
-      case 'd':
-         if (mode == MOV)
-            tturn = -1.0;
-         else
+            break;
+         case 'd':
             omega = -OMEGA;
-         break;
-      case 's':
-         if (mode == MOV)
-            mmove = -1.0;
-         else
+            break;
+         case 's':
             speed = -SPEED;
-         break;
+            break;
+         default:
+            break;
+      }
+   } else if (mode == MOV){
+      switch (key){
+         case 'w':
+            mmove = 1.0;
+            break;
+         case 'a':
+            tturn = 1.0;
+            break;
+         case 'd':
+            tturn = -1.0;
+            break;
+         case 's':
+            mmove = -1.0;
+            break;
+      }
+   }
+
+   switch (key){
       case 'f':
          mode = MOV;
          break;

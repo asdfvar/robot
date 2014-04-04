@@ -2,19 +2,23 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#define MAP_SIZE 16777216
+#define MAP_SIZE 16384
 
 map::map(){
-   x = (float*) calloc(MAP_SIZE, sizeof(float));
-   y = (float*) calloc(MAP_SIZE, sizeof(float));
+   mem = (float*) calloc(6*MAP_SIZE, sizeof(float));
+
+   x1 = mem;
+   y1 = x1 + MAP_SIZE;
+   x2 = y1 + MAP_SIZE;
+   y2 = x2 + MAP_SIZE;
+
+   centers  = y2      + MAP_SIZE;
+   radii    = centers +  MAP_SIZE;
 }
 
 map::~map(){
-   delete x;
-   x = NULL;
-
-   delete y;
-   y = NULL;
+   delete mem;
+   mem = NULL;
 }
 
 void map::hello(){

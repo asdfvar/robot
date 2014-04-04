@@ -15,7 +15,9 @@ class map{
 
    private:
 
-      float *x, *y;
+      float *mem;
+      float *x1, *y1, *x2, *y2;       // line parameters
+      float *tmp, *radii, *centers;   // circle parameters
 
 };
 
