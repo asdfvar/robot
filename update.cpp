@@ -95,9 +95,6 @@ int robot::move(unsigned char key){
          speed = 0.0;
          omega = 0.0;
          break;
-      case 'q':
-         exit(1);
-         break;
       default:
          break;
    }

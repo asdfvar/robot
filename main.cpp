@@ -8,6 +8,7 @@
 #include "map.h"
 #include <math.h>
 
+map *MAP = new map();
 robot rob(0.0, 0.0, 1.57);
 
 void idle(void){
@@ -22,6 +23,8 @@ void idle(void){
 void move(void){
    glClear(GL_COLOR_BUFFER_BIT);
 
+   MAP->draw();
+
    rob.drawpath();
    rob.drawrobot();
 
@@ -34,6 +37,12 @@ void move(void){
 
 void keyboardDown(unsigned char key, int x, int y){
    rob.move(key);
+
+   if (key == 'q'){
+      delete MAP;
+      std::cout << "program exit" << std::endl;
+      exit(1);
+   }
 }
 
 /***************
@@ -50,11 +59,21 @@ void keyboardUp(unsigned char key, int x, int y){
 
 int main(int argc, char** argv){
 
-   map *MAP = new map();
+   float x1[4],x2[4],y1[4],y2[4];
+   float cx[3],cy[3],rad[3];
 
-   MAP->hello();
+   x1[0] = 0.0; x1[1] = -0.5; x1[2] = -0.5; x1[3] = 0.5;
+   y1[0] = 0.0; y1[1] = -0.5; y1[2] = 0.5; y1[3] = -0.5;
+   x2[0] = 0.5; x2[1] = 0.0; x2[2] = 0.5; x2[3] = 0.5;
+   y2[0] = 0.5; y2[1] = 1.0; y2[2] = -0.5; y2[3] = 0.5;
 
-   delete MAP;
+   MAP->loadlines(&x1[0], &y1[0], &x2[0], &y2[0], 4);
+
+   cx[0] = 0.0; cx[1] = 0.5; cx[2] = -0.5;
+   cy[0] = 0.0; cy[1] = 0.5; cy[2] = 0.5;;
+   rad[0] = 0.2; rad[1] = 0.1; rad[2] = 0.3;
+
+   MAP->loadcircles(&cx[0], &cy[0], &rad[0], 3);
 
    glutInit(&argc, argv);
    glutInitDisplayMode(GLUT_RGB|GLUT_SINGLE);

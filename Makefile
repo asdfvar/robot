@@ -1,7 +1,8 @@
 CC = g++
 FLAGS = -Wall
 
-OBJ = main.o robot.o update.o draw.o map.o
+OBJ = main.o robot.o update.o map.o \
+      drawmap.o drawrobot.o loadmap.o
 EXE = robot
 TRASH = robot.h.gch
 
@@ -18,11 +19,17 @@ robot.o: robot.cpp robot.h
 update.o: update.cpp robot.h
 	$(CC) $(FLAGS) -lm robot.h update.cpp -c
 
-draw.o: draw.cpp robot.h
-	$(CC) $(FLAGS) -lm -lglut draw.cpp -c
+drawrobot.o: drawrobot.cpp robot.h
+	$(CC) $(FLAGS) -lm -lglut drawrobot.cpp -c
 
 map.o: map.cpp map.h
 	$(CC) $(FLAGS) map.cpp -c
+
+loadmap.o: loadmap.cpp map.h
+	$(CC) $(FLAGS) loadmap.cpp -c
+
+drawmap.o: drawmap.cpp map.h
+	$(CC) $(FLAGS) -lglut drawmap.cpp -c
 
 clean:
 	rm $(OBJ) $(EXE) $(TRASH)
