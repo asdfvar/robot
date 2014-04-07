@@ -7,12 +7,13 @@
 #include "robot.h"
 #include "map.h"
 #include <math.h>
+#include <time.h>
 
 map *MAP = new map();
 robot rob(0.0, 0.0, 1.57);
 
 void idle(void){
-   rob.update(0.04);
+   rob.update();
    glutPostRedisplay();
 }
 
@@ -21,6 +22,7 @@ void idle(void){
  ********/
 
 void move(void){
+
    glClear(GL_COLOR_BUFFER_BIT);
 
    MAP->draw();
@@ -77,7 +79,7 @@ int main(int argc, char** argv){
 
    glutInit(&argc, argv);
    glutInitDisplayMode(GLUT_RGB|GLUT_SINGLE);
-   glutInitWindowSize(600, 600);
+   glutInitWindowSize(900, 900);
    glutInitWindowPosition(50, 50);
    glutCreateWindow("OpenGL Example");
 

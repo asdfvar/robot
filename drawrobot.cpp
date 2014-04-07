@@ -8,27 +8,34 @@
 #include <GL/glut.h>
 #include <GL/glu.h>
 #include <GL/gl.h>
+#include "conversions.h"
 
+#define PI 3.1415926535
 #define ABS(A) (A > 0.0 ? A : -A)
+
+/*******************
+ * draw robot path *
+ *******************/
 
 int robot::drawpath(){
 
-   int i,N = 20;
-   float arcx1[20], arcy1[20];
-   float arcx2[20], arcy2[20];
+   int i,N = 40;
+   float arcx1[40], arcy1[40];
+   float arcx2[40], arcy2[40];
    float r1, r2;
    float tmp;
-   float dirp = dir - 1.57079632679;
+   float dirp = dir - PI/2.0;
    float dth;
    float dp;
    float p;
 
    if (!is_strait){
       r1 = radius - diameter/2.0; r2 = radius + diameter/2.0;
-      thetalen = 20*speed/radius;
+      r1 *= CONV; r2 *= CONV;
+      thetalen = speed/radius;
       dth = (thetalen - 0.0)/((float)(N-1));
    } else {
-      dp = speed;
+      dp = speed/(float)N * CONV;
    }
 
   /*****************************
@@ -36,14 +43,16 @@ int robot::drawpath(){
    *****************************/
 
    // if the robot is not moving, exit
+
    if (speed < MINSPEED && speed > -MINSPEED)
       return -1;
 
    // get the arc
+
    if (is_strait){
       for (i = 0, p = 0.0; i < N; p += dp, i++){
-         arcx1[i] = -diameter/2.0;
-         arcx2[i] = diameter/2.0;
+         arcx1[i] = -diameter/2.0 * CONV;
+         arcx2[i] = diameter/2.0 * CONV;
          arcy1[i] = p;
          arcy2[i] = p;
       }
@@ -56,7 +65,7 @@ int robot::drawpath(){
             arcy2[i] = r2*sinf(th);
          }
       } else if ((omega < 0.0 && speed > 0.0) || (omega > 0.0 && speed < 0.0)) {
-         for (i = 0, th = 3.14159; i < N; i++, th -= dth){
+         for (i = 0, th = PI; i < N; i++, th -= dth){
             arcx1[i] = r1*cosf(th);
             arcy1[i] = r1*sinf(th);
             arcx2[i] = r2*cosf(th);
@@ -65,8 +74,8 @@ int robot::drawpath(){
       }
    }
 
-#if 1
    // rotate the path to the robot direction
+
    for (i = 0; i < N; i++){
       tmp = arcx1[i]*cosf(dirp) - arcy1[i]*sinf(dirp);
       arcy1[i] = arcx1[i]*sinf(dirp) + arcy1[i]*cosf(dirp);
@@ -77,32 +86,33 @@ int robot::drawpath(){
    }
 
    // translate to origin
+
    if (!is_strait){
       if ((omega > 0.0 && speed > 0.0) || (omega < 0.0 && speed < 0.0)){
          for (i = 0; i < N; i++){
-            arcx1[i] -= radius*cosf(dirp);
-            arcx2[i] -= radius*cosf(dirp);
-            arcy1[i] -= radius*sinf(dirp);
-            arcy2[i] -= radius*sinf(dirp);
+            arcx1[i] -= radius*cosf(dirp)*CONV;
+            arcx2[i] -= radius*cosf(dirp)*CONV;
+            arcy1[i] -= radius*sinf(dirp)*CONV;
+            arcy2[i] -= radius*sinf(dirp)*CONV;
          }
       } else if ((omega < 0.0 && speed > 0.0) || (omega > 0.0 && speed < 0.0)) {
          for (i = 0; i < N; i++){
-            arcx1[i] += radius*cosf(dirp);
-            arcx2[i] += radius*cosf(dirp);
-            arcy1[i] += radius*sinf(dirp);
-            arcy2[i] += radius*sinf(dirp);
+            arcx1[i] += radius*cosf(dirp)*CONV;
+            arcx2[i] += radius*cosf(dirp)*CONV;
+            arcy1[i] += radius*sinf(dirp)*CONV;
+            arcy2[i] += radius*sinf(dirp)*CONV;
          }
       }
    }
 
    // translate to position
+
    for (i = 0; i < N; i++){
       arcx1[i] += posx;
       arcx2[i] += posx;
       arcy1[i] += posy;
       arcy2[i] += posy;
    }
-#endif
 
    glColor3ub(255, 255, 255);
    for (i = 0; i < N-1; i++){
@@ -117,6 +127,10 @@ int robot::drawpath(){
 return 0;
 }
 
+/**************
+ * draw robot *
+ **************/
+
 int robot::drawrobot(){
 
    int i;
@@ -125,12 +139,12 @@ int robot::drawrobot(){
    float x,y;
    const float sqrt3 = 1.7320508;
 
-   x1 = -0.5*diameter*sqrt3/2.0;
-   y1 = -0.5*diameter*0.6;
-   x2 = 0.5*diameter*sqrt3/2.0;
-   y2 = 0.0;
-   x3 = -0.5*diameter*sqrt3/2.0;
-   y3 = 0.5*diameter*0.6;
+   x1 = -diameter/2.0*sqrt3/2.0 * CONV;
+   y1 = -diameter/2.0*0.6 * CONV;
+   x2 = diameter/2.0*sqrt3/2.0 * CONV;
+   y2 = 0.0 * CONV;
+   x3 = -diameter/2.0*sqrt3/2.0 * CONV;
+   y3 = diameter/2.0*0.6 * CONV;
 
    tmp = x1*cosf(dir) - y1*sinf(dir);
    y1  = x1*sinf(dir) + y1*cosf(dir);
@@ -150,16 +164,18 @@ int robot::drawrobot(){
    y3 += posy;
 
    // draw circle around robot
+
    glColor3ub(0, 255, 0);
    glBegin(GL_POLYGON);
    for (i = 0; i < 40; i++){
-      x = posx + 0.05*cosf(2*3.1415926*(float)i/(float)40);
-      y = posy + 0.05*sinf(2*3.1415926*(float)i/(float)40);
+      x = posx + diameter/2.0*cosf(2*PI*(float)i/(float)40) * CONV;
+      y = posy + diameter/2.0*sinf(2*PI*(float)i/(float)40) * CONV;
       glVertex3f(x, y, 0.0);
    }
    glEnd();
 
    // draw robot
+
    glColor3ub(255, 0, 0);
    glBegin(GL_POLYGON);
       glVertex3f(x1, y1, 0.0);

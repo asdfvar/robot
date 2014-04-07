@@ -19,7 +19,7 @@ class robot{
       * Functions *
       *************/
 
-      int update(float dt);
+      int update();
 
       float getposx();
       float getposy();

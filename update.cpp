@@ -2,12 +2,15 @@
 #include <math.h>
 #include <stdlib.h>
 #include <iostream>
+#include <time.h>
+#include <sys/time.h>
+#include "conversions.h"
 
-#define SPEED 0.01
-#define OMEGA 0.1
+#define SPEED 1.0 // default 1 m/s
+#define OMEGA 2.0 // default 1 rad/s
 
-#define dSPEED 0.00002
-#define dOMEGA 0.0002
+#define dSPEED 0.0002
+#define dOMEGA 0.002
 
 #define ABS(A) (A > 0.0 ? A : -A)
 
@@ -18,8 +21,18 @@ enum {DEF = 0, MOV};
 static int mode = DEF;
 static float mmove = 0.0;
 static float tturn = 0.0;
+static bool init = true;
+static struct timeval start, end;
 
-int robot::update(float dt){
+int robot::update(){
+
+   float dt;
+
+   if (init){
+      gettimeofday(&start, NULL);
+      gettimeofday(&end, NULL);
+      init = false;
+   }
 
    if (mode == MOV){
       speed += mmove*dSPEED;
@@ -32,16 +45,25 @@ int robot::update(float dt){
          omega -= mmove*dSPEED/radius;
    }
 
-   posx += speed*cosf(dir)*dt;
-   posy += speed*sinf(dir)*dt;
-
-   dir += omega*dt;
-
    if (omega > MINOMEGA || omega < -MINOMEGA){
       radius = abs(speed/omega);
       is_strait = false;
    } else
       is_strait = true;
+
+   // update the delta time dt
+
+   gettimeofday(&end, NULL);
+   dt = (float)((end.tv_sec*1000000 + end.tv_usec) -
+        (start.tv_sec*1000000 + start.tv_usec))/1000000.0;
+   gettimeofday(&start, NULL);
+
+   // update the position and direction
+
+   posx += speed*cosf(dir)*dt * CONV;
+   posy += speed*sinf(dir)*dt * CONV;
+
+   dir += omega*dt;
 
    return 0;
 }
@@ -101,6 +123,10 @@ int robot::move(unsigned char key){
 
    return 0;
 }
+
+/**********
+ * unmove *
+ **********/
 
 int robot::unmove(unsigned char key){
 
