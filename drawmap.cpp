@@ -36,8 +36,8 @@ int map::draw(){
    for (i = 0; i < Ncircles; i++){
       glBegin(GL_POLYGON);
       for (k = 0; k < CIRCRES; k++){
-         x = centerx[i] + radii[i]*cosf(2*PI*(float)k/(float)CIRCRES);
-         y = centery[i] + radii[i]*sinf(2*PI*(float)k/(float)CIRCRES);
+         x = (centerx[i] + radii[i]*cosf(2*PI*(float)k/(float)CIRCRES))*CONV;
+         y = (centery[i] + radii[i]*sinf(2*PI*(float)k/(float)CIRCRES))*CONV;
          glVertex3f(x, y, 0.0);
       }
       glEnd();
