@@ -4,6 +4,7 @@
 #include <GL/gl.h>
 #include <math.h>
 #include <iostream>
+#include "constants.h"
 
 #define CIRCRES 80
 #define PI 3.1415926

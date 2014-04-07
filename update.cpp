@@ -4,7 +4,7 @@
 #include <iostream>
 #include <time.h>
 #include <sys/time.h>
-#include "conversions.h"
+#include "constants.h"
 
 #define SPEED 1.0 // default 1 m/s
 #define OMEGA 2.0 // default 1 rad/s
@@ -34,6 +34,9 @@ int robot::update(){
       init = false;
    }
 
+   // update position in MOV mode while the key
+   // is being pressed down
+
    if (mode == MOV){
       speed += mmove*dSPEED;
       omega += tturn*dOMEGA;
@@ -44,6 +47,9 @@ int robot::update(){
             && ABS(speed) >= MINSPEED && !is_strait)
          omega -= mmove*dSPEED/radius;
    }
+
+   // update the radius and determine if the
+   // robot is going straight or not
 
    if (omega > MINOMEGA || omega < -MINOMEGA){
       radius = abs(speed/omega);
