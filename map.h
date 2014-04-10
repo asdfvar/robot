@@ -13,7 +13,7 @@ class map{
 
       int loadlines(float *X1, float *Y1, float *X2, float *Y2, int N);
       int loadcircles(float *CX, float *CY, float *R, int N);
-      int draw();
+      int draw(float, float);
 
    private:
 

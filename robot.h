@@ -24,8 +24,10 @@ class robot{
       float getposx();
       float getposy();
 
-      int drawpath();
-      int drawrobot();
+      int setposxy(float x, float y);
+
+      int drawpath(int mode);
+      int drawrobot(int mode);
 
       int move(unsigned char key);
       int unmove(unsigned char key);

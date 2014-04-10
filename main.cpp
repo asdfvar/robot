@@ -11,6 +11,7 @@
 
 map *MAP = new map();
 robot rob(0.0, 0.0, 1.57);
+int mode = 1;
 
 void idle(void){
    rob.update();
@@ -25,10 +26,13 @@ void move(void){
 
    glClear(GL_COLOR_BUFFER_BIT);
 
-   MAP->draw();
+   if (mode == 0)
+      MAP->draw(0.0, 0.0);
+   else if (mode == 1)
+      MAP->draw(rob.getposx(), rob.getposy());
 
-   rob.drawpath();
-   rob.drawrobot();
+   rob.drawpath(mode);
+   rob.drawrobot(mode);
 
    glFlush();
 }
@@ -40,11 +44,18 @@ void move(void){
 void keyboardDown(unsigned char key, int x, int y){
    rob.move(key);
 
+   // quit
    if (key == 'q'){
       delete MAP;
       std::cout << "program exit" << std::endl;
       exit(1);
    }
+   else if (key == 'c')
+      mode = 1;
+   else if (key == 'g')
+      mode = 0;
+   else if (key == '0')
+      rob.setposxy(0.0, 0.0);
 }
 
 /***************

@@ -17,7 +17,7 @@
  * draw robot path *
  *******************/
 
-int robot::drawpath(){
+int robot::drawpath(int mode){
 
    int i,N = 40;
    float arcx1[40], arcy1[40];
@@ -107,12 +107,13 @@ int robot::drawpath(){
 
    // translate to position
 
-   for (i = 0; i < N; i++){
-      arcx1[i] += posx;
-      arcx2[i] += posx;
-      arcy1[i] += posy;
-      arcy2[i] += posy;
-   }
+   if (mode == 0)
+      for (i = 0; i < N; i++){
+         arcx1[i] += posx;
+         arcx2[i] += posx;
+         arcy1[i] += posy;
+         arcy2[i] += posy;
+      }
 
    glColor3ub(255, 255, 255);
    for (i = 0; i < N-1; i++){
@@ -131,7 +132,7 @@ return 0;
  * draw robot *
  **************/
 
-int robot::drawrobot(){
+int robot::drawrobot(int mode){
 
    int i;
    float x1,y1,x2,y2,x3,y3;
@@ -156,20 +157,27 @@ int robot::drawrobot(){
    y3  = x3*sinf(dir) + y3*cosf(dir);
    x3  = tmp;
 
-   x1 += posx;
-   y1 += posy;
-   x2 += posx;
-   y2 += posy;
-   x3 += posx;
-   y3 += posy;
+   if (mode == 0){
+      x1 += posx;
+      y1 += posy;
+      x2 += posx;
+      y2 += posy;
+      x3 += posx;
+      y3 += posy;
+   }
 
    // draw circle around robot
 
    glColor3ub(0, 255, 0);
    glBegin(GL_POLYGON);
    for (i = 0; i < 40; i++){
-      x = posx + diameter/2.0*cosf(2*PI*(float)i/(float)40) * CONV;
-      y = posy + diameter/2.0*sinf(2*PI*(float)i/(float)40) * CONV;
+      if (mode == 0){
+         x = posx + diameter/2.0*cosf(2*PI*(float)i/(float)40) * CONV;
+         y = posy + diameter/2.0*sinf(2*PI*(float)i/(float)40) * CONV;
+      } else if (mode == 1){
+         x = diameter/2.0*cosf(2*PI*(float)i/(float)40) * CONV;
+         y = diameter/2.0*sinf(2*PI*(float)i/(float)40) * CONV;
+      }
       glVertex3f(x, y, 0.0);
    }
    glEnd();

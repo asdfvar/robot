@@ -29,3 +29,10 @@ float robot::getposx(void){
 float robot::getposy(void){
    return posy;
 }
+
+int robot::setposxy(float x, float y){
+   posx = x;
+   posy = y;
+
+   return 0;
+}
