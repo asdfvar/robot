@@ -14,7 +14,10 @@ robot rob(0.0, 0.0, 1.57);
 int mode = 1;
 
 void idle(void){
+
    rob.update();
+   std::cout << MAP->getdist(10.0, 10.0) << std::endl;
+
    glutPostRedisplay();
 }
 

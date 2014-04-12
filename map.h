@@ -17,6 +17,8 @@ class map{
       int loadcircles(float *CX, float *CY, float *R, int N);
       int draw(robot rob, int mode);
 
+      float getdist(float x, float y);
+
    private:
 
       float *mem;

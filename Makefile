@@ -23,7 +23,7 @@ drawrobot.o: drawrobot.cpp robot.h constants.h
 	$(CC) $(FLAGS) -lm -lglut robot.h constants.h drawrobot.cpp -c
 
 map.o: map.cpp map.h
-	$(CC) $(FLAGS) map.cpp -c
+	$(CC) $(FLAGS) -lm map.cpp -c
 
 loadmap.o: loadmap.cpp map.h
 	$(CC) $(FLAGS) loadmap.cpp -c

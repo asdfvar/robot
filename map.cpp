@@ -1,8 +1,11 @@
 #include "map.h"
 #include <stdlib.h>
 #include <iostream>
+#include <math.h>
 
 #define MAP_SIZE 16384
+
+#define MIN(A,B) A < B ? A : B
 
 map::map(){
 
@@ -32,3 +35,26 @@ map::~map(){
    mem = NULL;
 }
 
+/*
+ * get the distance from a point (x,y)
+ */
+
+float map::getdist(float x, float y) {
+
+   int i;
+   float dist, maxdist;
+   bool initdone=false;
+
+   for (i=0; i<Ncircles; i++) {
+      dist = sqrtf((x - centerx[i])*(x - centerx[i]) + 
+      (y - centery[i])*(y - centery[i]));
+      if (!initdone) {
+         maxdist = dist;
+         initdone = true;
+      } else {
+         maxdist = MIN(maxdist, dist);
+      }
+   }
+
+   return maxdist;
+}
