@@ -76,6 +76,7 @@ int robot::drawpath(int mode){
 
    // rotate the path to the robot direction
 
+   if (mode != 2){
    for (i = 0; i < N; i++){
       tmp = arcx1[i]*cosf(dirp) - arcy1[i]*sinf(dirp);
       arcy1[i] = arcx1[i]*sinf(dirp) + arcy1[i]*cosf(dirp);
@@ -84,9 +85,23 @@ int robot::drawpath(int mode){
       arcy2[i] = arcx2[i]*sinf(dirp) + arcy2[i]*cosf(dirp);
       arcx2[i] = tmp;
    }
+   }
 
    // translate to origin
 
+   if (mode == 2){
+      if ((omega > 0.0 && speed > 0.0) || (omega < 0.0 && speed < 0.0)){
+         for (i = 0; i < N; i++){
+            arcx1[i] -= radius*CONV;
+            arcx2[i] -= radius*CONV;
+         }
+      } else if ((omega < 0.0 && speed > 0.0) || (omega > 0.0 && speed < 0.0)) {
+         for (i = 0; i < N; i++){
+            arcx1[i] += radius*CONV;
+            arcx2[i] += radius*CONV;
+         }
+      }
+   } else {
    if (!is_strait){
       if ((omega > 0.0 && speed > 0.0) || (omega < 0.0 && speed < 0.0)){
          for (i = 0; i < N; i++){
@@ -103,6 +118,7 @@ int robot::drawpath(int mode){
             arcy2[i] += radius*sinf(dirp)*CONV;
          }
       }
+   }
    }
 
    // translate to position
@@ -147,15 +163,23 @@ int robot::drawrobot(int mode){
    x3 = -diameter/2.0*sqrt3/2.0 * CONV;
    y3 = diameter/2.0*0.6 * CONV;
 
-   tmp = x1*cosf(dir) - y1*sinf(dir);
-   y1  = x1*sinf(dir) + y1*cosf(dir);
-   x1  = tmp;
-   tmp = x2*cosf(dir) - y2*sinf(dir);
-   y2  = x2*sinf(dir) + y2*cosf(dir);
-   x2  = tmp;
-   tmp = x3*cosf(dir) - y3*sinf(dir);
-   y3  = x3*sinf(dir) + y3*cosf(dir);
-   x3  = tmp;
+   // rotate robot to its direction
+
+   if (mode == 2) {
+      tmp = x1; x1 = y1; y1 = tmp;
+      tmp = x2; x2 = y2; y2 = tmp;
+      tmp = x3; x3 = y3; y3 = tmp;
+   } else {
+      tmp = x1*cosf(dir) - y1*sinf(dir);
+      y1  = x1*sinf(dir) + y1*cosf(dir);
+      x1  = tmp;
+      tmp = x2*cosf(dir) - y2*sinf(dir);
+      y2  = x2*sinf(dir) + y2*cosf(dir);
+      x2  = tmp;
+      tmp = x3*cosf(dir) - y3*sinf(dir);
+      y3  = x3*sinf(dir) + y3*cosf(dir);
+      x3  = tmp;
+   }
 
    if (mode == 0){
       x1 += posx;
@@ -174,7 +198,7 @@ int robot::drawrobot(int mode){
       if (mode == 0){
          x = posx + diameter/2.0*cosf(2*PI*(float)i/(float)40) * CONV;
          y = posy + diameter/2.0*sinf(2*PI*(float)i/(float)40) * CONV;
-      } else if (mode == 1){
+      } else if (mode == 1 || mode == 2){
          x = diameter/2.0*cosf(2*PI*(float)i/(float)40) * CONV;
          y = diameter/2.0*sinf(2*PI*(float)i/(float)40) * CONV;
       }

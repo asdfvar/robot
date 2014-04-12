@@ -9,7 +9,7 @@
 #define SPEED 1.0 // default 1 m/s
 #define OMEGA 2.0 // default 1 rad/s
 
-#define dSPEED 0.0002
+#define dSPEED 0.002
 #define dOMEGA 0.002
 
 #define ABS(A) (A > 0.0 ? A : -A)

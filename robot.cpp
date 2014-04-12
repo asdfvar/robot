@@ -30,6 +30,10 @@ float robot::getposy(void){
    return posy;
 }
 
+float robot::getdir(void){
+   return dir;
+}
+
 int robot::setposxy(float x, float y){
    posx = x;
    posy = y;

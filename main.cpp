@@ -26,11 +26,7 @@ void move(void){
 
    glClear(GL_COLOR_BUFFER_BIT);
 
-   if (mode == 0)
-      MAP->draw(0.0, 0.0);
-   else if (mode == 1)
-      MAP->draw(rob.getposx(), rob.getposy());
-
+   MAP->draw(rob, mode);
    rob.drawpath(mode);
    rob.drawrobot(mode);
 
@@ -50,6 +46,8 @@ void keyboardDown(unsigned char key, int x, int y){
       std::cout << "program exit" << std::endl;
       exit(1);
    }
+   else if (key == 'C')
+      mode = 2;
    else if (key == 'c')
       mode = 1;
    else if (key == 'g')

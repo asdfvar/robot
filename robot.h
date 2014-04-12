@@ -23,6 +23,7 @@ class robot{
 
       float getposx();
       float getposy();
+      float getdir();
 
       int setposxy(float x, float y);
 
