@@ -73,8 +73,9 @@ float map::getdist(float x, float y) {
   
    for (i=0; i<Nlines; i++) {
       // insert check if point is within the line boundaries here
-      dist = ABS((y2[i]-y1[i])*x - (x2[i]-x1[i])*y - x1[i]*y2[i] + x2[i]*y1[i])/
-       sqrtf((x2[i]-x1[i])*(x2[i]-x1[i]) + (y2[i]-y1[i])*(y2[i]-y1[i]));
+      dist = (y2[i]-y1[i])*x - (x2[i]-x1[i])*y - x1[i]*y2[i] + x2[i]*y1[i];
+      dist = ABS(dist);
+      dist /= sqrtf((x2[i]-x1[i])*(x2[i]-x1[i]) + (y2[i]-y1[i])*(y2[i]-y1[i]));
       if (!initdone) {
          mindist = dist;
          initdone = true;
@@ -82,6 +83,6 @@ float map::getdist(float x, float y) {
          mindist = MIN(mindist, dist);
       }
    }
-std::cout << dist << std::endl;
+
    return mindist;
 }

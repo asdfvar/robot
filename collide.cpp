@@ -8,7 +8,7 @@ int robot::collide(map *MAP){
 
    dist = MAP->getdist(posx, posy);
 
-   std::cout << dist << std::endl;
+std::cout << dist << std::endl;
 
    return 0;
 }
