@@ -16,7 +16,8 @@ int mode = 1;
 void idle(void){
 
    rob.update();
-   std::cout << MAP->getdist(10.0, 10.0) << std::endl;
+//   std::cout << MAP->getdist(10.0, 10.0) << std::endl;
+   rob.collide(MAP);
 
    glutPostRedisplay();
 }

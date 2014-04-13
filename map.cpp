@@ -45,9 +45,12 @@ float map::getdist(float x, float y) {
    float dist, maxdist;
    bool initdone=false;
 
+   // distance from circles
+
    for (i=0; i<Ncircles; i++) {
       dist = sqrtf((x - centerx[i])*(x - centerx[i]) + 
       (y - centery[i])*(y - centery[i]));
+      dist -= radii[i];
       if (!initdone) {
          maxdist = dist;
          initdone = true;

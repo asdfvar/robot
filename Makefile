@@ -2,7 +2,8 @@ CC = g++
 FLAGS = -Wall
 
 OBJ = main.o robot.o update.o map.o \
-      drawmap.o drawrobot.o loadmap.o
+      drawmap.o drawrobot.o loadmap.o \
+      collide.o
 EXE = robot
 TRASH = robot.h.gch constants.h.gch
 
@@ -30,6 +31,9 @@ loadmap.o: loadmap.cpp map.h
 
 drawmap.o: drawmap.cpp map.h
 	$(CC) $(FLAGS) -lglut drawmap.cpp -c
+
+collide.o: collide.cpp robot.h map.h
+	$(CC) $(FLAGS) collide.cpp -c
 
 clean:
 	rm $(OBJ) $(EXE) $(TRASH)

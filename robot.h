@@ -1,6 +1,9 @@
 #ifndef _ROBOT_H_
 #define _ROBOT_H_
 
+#include "map.h"
+class map;
+
 #define MINOMEGA 0.0001
 #define MINSPEED 0.0001
 
@@ -32,6 +35,7 @@ class robot{
 
       int move(unsigned char key);
       int unmove(unsigned char key);
+      int collide(map *MAP);
 
    private:
    

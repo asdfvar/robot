@@ -2,6 +2,7 @@
 #define _MAP_H_
 
 #include "robot.h"
+class robot;
 
 class map{
    public:
