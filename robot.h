@@ -4,8 +4,8 @@
 #include "map.h"
 class map;
 
-#define MINOMEGA 0.0001
-#define MINSPEED 0.0001
+#define MINOMEGA 0.01 // rad/s
+#define MINSPEED 0.01 // m/s
 
 class robot{
    public:
@@ -55,6 +55,10 @@ class robot{
       float radius;    // robot path radius
       bool  is_strait; // the case when the radius --> inf
       float th;   // angle parameters used
+
+      /*********/
+
+      bool collision;   // collision
       
 };
 

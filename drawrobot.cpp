@@ -192,7 +192,11 @@ int robot::drawrobot(int mode){
 
    // draw circle around robot
 
-   glColor3ub(0, 255, 0);
+   if (collision == true)
+      glColor3ub(255, 0, 0);
+   else
+      glColor3ub(0, 255, 0);
+
    glBegin(GL_POLYGON);
    for (i = 0; i < 40; i++){
       if (mode == 0){

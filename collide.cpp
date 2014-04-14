@@ -10,7 +10,10 @@ int robot::collide(map *MAP){
    dist = MAP->getdist(posx, posy);
    dist -= 0.5*diameter;
 
-std::cout << dist << std::endl;
+   if (dist <= 0)
+      collision = true;
+   else
+      collision = false;
 
    return 0;
 }

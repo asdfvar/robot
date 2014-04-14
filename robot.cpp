@@ -8,6 +8,7 @@ robot::robot(float position_x, float position_y, float direction){
    speed = 0.0f;
    omega = 0.0f;
    is_strait = true;
+   collision = false;
 }
 
 robot::robot(){
@@ -18,6 +19,7 @@ robot::robot(){
    speed = 0.0f;
    omega = 0.0f;
    is_strait = true;
+   collision = false;
 }
 
 robot::~robot(){}
