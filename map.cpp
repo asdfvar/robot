@@ -44,6 +44,7 @@ float map::getdist(float x, float y) {
 
    int i;
    float dist, mindist;
+   float Dp1, Dp2, Dp1p2;
    bool initdone=false;
 
    // distance from circles
@@ -72,10 +73,24 @@ float map::getdist(float x, float y) {
     */
   
    for (i=0; i<Nlines; i++) {
-      // insert check if point is within the line boundaries here
-      dist = (y2[i]-y1[i])*x - (x2[i]-x1[i])*y - x1[i]*y2[i] + x2[i]*y1[i];
-      dist = ABS(dist);
-      dist /= sqrtf((x2[i]-x1[i])*(x2[i]-x1[i]) + (y2[i]-y1[i])*(y2[i]-y1[i]));
+
+      // get distance to the line. The line is a finite distance
+      // so some consideration must be set.
+
+      Dp1p2 = (x2[i]-x1[i])*(x2[i]-x1[i]) + (y2[i]-y1[i])*(y2[i]-y1[i]);
+      Dp1   = (x-x1[i])*(x-x1[i]) + (y-y1[i])*(y-y1[i]);
+      Dp2   = (x-x2[i])*(x-x2[i]) + (y-y2[i])*(y-y2[i]);
+
+      if ( Dp1 + Dp1p2 < Dp2 )
+         dist = sqrtf(Dp1);
+      else if ( Dp2 + Dp1p2 < Dp1)
+         dist = sqrtf(Dp2);
+      else {
+         dist = (y2[i]-y1[i])*x - (x2[i]-x1[i])*y - x1[i]*y2[i] + x2[i]*y1[i];
+         dist = ABS(dist);
+         dist /= sqrtf(Dp1p2);
+      }
+
       if (!initdone) {
          mindist = dist;
          initdone = true;

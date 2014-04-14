@@ -1,3 +1,9 @@
+/*
+ *
+ * the unit meters are somewhat redundant here. Any unit of displacement is acceptable as long as it
+ * is consistent
+ */
+
 #include "robot.h"
 #include <math.h>
 #include <stdlib.h>
@@ -9,8 +15,8 @@
 #define SPEED 1.0 // default 1 m/s
 #define OMEGA 2.0 // default 1 rad/s
 
-#define dSPEED 0.002
-#define dOMEGA 0.004
+#define dSPEED 0.5   // increment in speed measured in m/s/s
+#define dOMEGA 0.004 // increment in rotation rate measured in rad/s/s
 
 #define ABS(A) (A > 0.0 ? A : -A)
 
@@ -34,18 +40,25 @@ int robot::update(){
       init = false;
    }
 
+   // update the delta time dt
+
+   gettimeofday(&end, NULL);
+   dt = (float)((end.tv_sec*1000000 + end.tv_usec) -
+        (start.tv_sec*1000000 + start.tv_usec))/1000000.0;
+   gettimeofday(&start, NULL);
+
    // update position in MOV mode while the key
    // is being pressed down
 
    if (mode == MOV){
-      speed += mmove*dSPEED;
-      omega += tturn*dOMEGA;
+      speed += mmove*(dSPEED*dt);
+      omega += tturn*(4.0*dt);
       if (((omega > 0.0 && speed > 0.0) || (omega < 0.0 && speed < 0.0)) \
             && ABS(speed) >= MINSPEED && !is_strait)
-         omega += mmove*dSPEED/radius;
+         omega += mmove*(dSPEED*dt)/radius;
       if (((omega < 0.0 && speed > 0.0) || (omega > 0.0 && speed < 0.0)) \
             && ABS(speed) >= MINSPEED && !is_strait)
-         omega -= mmove*dSPEED/radius;
+         omega -= mmove*(dSPEED*dt)/radius;
    }
 
    // update the radius and determine if the
@@ -57,17 +70,10 @@ int robot::update(){
    } else
       is_strait = true;
 
-   // update the delta time dt
-
-   gettimeofday(&end, NULL);
-   dt = (float)((end.tv_sec*1000000 + end.tv_usec) -
-        (start.tv_sec*1000000 + start.tv_usec))/1000000.0;
-   gettimeofday(&start, NULL);
-
    // update the position and direction
 
-   posx += speed*cosf(dir)*dt * CONV;
-   posy += speed*sinf(dir)*dt * CONV;
+   posx += speed*cosf(dir)*dt * CONV; // only first order accurate. Exact is along the circular path
+   posy += speed*sinf(dir)*dt * CONV; // only first order accurate
 
    dir += omega*dt;
 
