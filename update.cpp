@@ -8,8 +8,6 @@
 #include <math.h>
 #include <stdlib.h>
 #include <iostream>
-#include <time.h>
-#include <sys/time.h>
 #include "constants.h"
 
 #define SPEED 1.0 // default 1 m/s
@@ -20,32 +18,13 @@
 
 #define ABS(A) (A > 0.0 ? A : -A)
 
-float abs(float);
-
 enum {DEF = 0, MOV};
 
 static int mode = DEF;
 static float mmove = 0.0;
 static float tturn = 0.0;
-static bool init = true;
-static struct timeval start, end;
 
-int robot::update(){
-
-   float dt;
-
-   if (init){
-      gettimeofday(&start, NULL);
-      gettimeofday(&end, NULL);
-      init = false;
-   }
-
-   // update the delta time dt
-
-   gettimeofday(&end, NULL);
-   dt = (float)((end.tv_sec*1000000 + end.tv_usec) -
-        (start.tv_sec*1000000 + start.tv_usec))/1000000.0;
-   gettimeofday(&start, NULL);
+int robot::update(float dt){
 
    // update position in MOV mode while the key
    // is being pressed down
@@ -65,7 +44,7 @@ int robot::update(){
    // robot is going straight or not
 
    if (omega > MINOMEGA || omega < -MINOMEGA){
-      radius = abs(speed/omega);
+      radius = ABS(speed/omega);
       is_strait = false;
    } else
       is_strait = true;
@@ -172,8 +151,4 @@ int robot::unmove(unsigned char key){
    }
 
    return 0;
-}
-
-float abs(float arg){
-   return arg > 0.0 ? arg : -arg;
 }

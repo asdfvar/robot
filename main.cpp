@@ -9,8 +9,11 @@
 #include <math.h>
 #include <time.h>
 
+float gettime(void);
+
+int N_robots=1;
 map *MAP = new map();
-robot rob(0.0, 0.0, 1.57);
+robot rob[1];
 int mode = 1;
 
 /********
@@ -19,8 +22,14 @@ int mode = 1;
 
 void idle(void){
 
-   rob.update();
-   rob.collide(MAP);
+   int i;
+   float dt;
+
+   dt = gettime();
+   for (i=0; i<N_robots; i++) {
+      rob[i].update(dt);
+      rob[i].collide(MAP);
+   }
 
    glutPostRedisplay();
 }
@@ -31,11 +40,16 @@ void idle(void){
 
 void move(void){
 
+   int i;
+
    glClear(GL_COLOR_BUFFER_BIT);
 
-   MAP->draw(rob, mode);
-   rob.drawpath(mode);
-   rob.drawrobot(mode);
+   MAP->draw(rob[0], mode);
+
+   for (i=0; i<N_robots; i++) {
+      rob[i].drawpath(mode);
+      rob[i].drawrobot(mode);
+   }
 
    glFlush();
 }
@@ -45,22 +59,27 @@ void move(void){
  *****************/
 
 void keyboardDown(unsigned char key, int x, int y){
-   rob.move(key);
 
-   // quit
-   if (key == 'q'){
-      delete MAP;
-      std::cout << "program exit" << std::endl;
-      exit(1);
+   int i;
+
+   for (i=0; i<N_robots; i++) {
+      rob[i].move(key);
+
+      // quit
+      if (key == 'q'){
+         delete MAP;
+         std::cout << "program exit" << std::endl;
+         exit(1);
+      }
+      else if (key == 'C')
+         mode = 2;
+      else if (key == 'c')
+         mode = 1;
+      else if (key == 'g')
+         mode = 0;
+      else if (key == '0')
+         rob[i].setposxy(0.0, 0.0);
    }
-   else if (key == 'C')
-      mode = 2;
-   else if (key == 'c')
-      mode = 1;
-   else if (key == 'g')
-      mode = 0;
-   else if (key == '0')
-      rob.setposxy(0.0, 0.0);
 }
 
 /***************
@@ -68,7 +87,12 @@ void keyboardDown(unsigned char key, int x, int y){
  ***************/
 
 void keyboardUp(unsigned char key, int x, int y){
-   rob.unmove(key);
+
+   int i;
+
+   for (i=0; i<N_robots; i++) {
+      rob[i].unmove(key);
+   }
 }
 
 /********
