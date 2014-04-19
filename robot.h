@@ -7,6 +7,8 @@ class map;
 #define MINOMEGA 0.01 // rad/s
 #define MINSPEED 0.01 // m/s
 
+enum {FREE=0, CNTR, CNTRFIX};
+
 class robot{
    public:
 

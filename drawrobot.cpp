@@ -76,7 +76,7 @@ int robot::drawpath(int mode){
 
    // rotate the path to the robot direction
 
-   if (mode != 2){
+   if (mode != CNTRFIX){
    for (i = 0; i < N; i++){
       tmp = arcx1[i]*cosf(dirp) - arcy1[i]*sinf(dirp);
       arcy1[i] = arcx1[i]*sinf(dirp) + arcy1[i]*cosf(dirp);
@@ -89,7 +89,7 @@ int robot::drawpath(int mode){
 
    // translate to origin
 
-   if (mode == 2){
+   if (mode == CNTRFIX){
       if ((omega > 0.0 && speed > 0.0) || (omega < 0.0 && speed < 0.0)){
          for (i = 0; i < N; i++){
             arcx1[i] -= radius*CONV;
@@ -123,7 +123,7 @@ int robot::drawpath(int mode){
 
    // translate to position
 
-   if (mode == 0)
+   if (mode == FREE)
       for (i = 0; i < N; i++){
          arcx1[i] += posx;
          arcx2[i] += posx;
@@ -165,7 +165,7 @@ int robot::drawrobot(int mode){
 
    // rotate robot to its direction
 
-   if (mode == 2) {
+   if (mode == CNTRFIX) {
       tmp = x1; x1 = y1; y1 = tmp;
       tmp = x2; x2 = y2; y2 = tmp;
       tmp = x3; x3 = y3; y3 = tmp;
@@ -181,7 +181,7 @@ int robot::drawrobot(int mode){
       x3  = tmp;
    }
 
-   if (mode == 0){
+   if (mode == FREE){
       x1 += posx;
       y1 += posy;
       x2 += posx;
@@ -199,10 +199,10 @@ int robot::drawrobot(int mode){
 
    glBegin(GL_POLYGON);
    for (i = 0; i < 40; i++){
-      if (mode == 0){
+      if (mode == FREE){
          x = posx + diameter/2.0*cosf(2*PI*(float)i/(float)40) * CONV;
          y = posy + diameter/2.0*sinf(2*PI*(float)i/(float)40) * CONV;
-      } else if (mode == 1 || mode == 2){
+      } else if (mode == CNTR || mode == CNTRFIX){
          x = diameter/2.0*cosf(2*PI*(float)i/(float)40) * CONV;
          y = diameter/2.0*sinf(2*PI*(float)i/(float)40) * CONV;
       }

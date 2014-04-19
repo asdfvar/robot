@@ -11,9 +11,9 @@
 
 float gettime(void);
 
-int N_robots=1;
+int N_robots=4;
 map *MAP = new map();
-robot rob[1];
+robot rob[4];
 int mode = 1;
 
 /********
@@ -72,11 +72,11 @@ void keyboardDown(unsigned char key, int x, int y){
          exit(1);
       }
       else if (key == 'C')
-         mode = 2;
+         mode = CNTRFIX;
       else if (key == 'c')
-         mode = 1;
+         mode = CNTR;
       else if (key == 'g')
-         mode = 0;
+         mode = FREE;
       else if (key == '0')
          rob[i].setposxy(0.0, 0.0);
    }
@@ -117,11 +117,16 @@ int main(int argc, char** argv){
 
    MAP->loadcircles(&cx[0], &cy[0], &rad[0], 3);
 
+   rob[0].setposxy(0.0, 0.0);
+   rob[1].setposxy(0.25, 0.0);
+   rob[2].setposxy(0.5, 0.0);
+   rob[3].setposxy(0.75, 0.0);
+
    glutInit(&argc, argv);
    glutInitDisplayMode(GLUT_RGB|GLUT_SINGLE);
    glutInitWindowSize(900, 900);
    glutInitWindowPosition(50, 50);
-   glutCreateWindow("OpenGL Example");
+   glutCreateWindow("Robut");
 
    glutDisplayFunc(move);
    glutKeyboardUpFunc(keyboardUp);
