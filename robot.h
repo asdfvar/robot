@@ -33,7 +33,7 @@ class robot{
       int setposxy(float x, float y);
 
       int drawpath(int mode);
-      int drawrobot(int mode);
+      int drawrobot(int mode, float relx, float rely, float reldir);
 
       int move(unsigned char key);
       int unmove(unsigned char key);

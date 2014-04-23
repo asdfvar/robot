@@ -14,6 +14,7 @@ float gettime(void);
 int N_robots=4;
 map *MAP = new map();
 robot rob[4];
+robot *jub = &rob[0];
 int mode = 1;
 
 /********
@@ -44,11 +45,11 @@ void move(void){
 
    glClear(GL_COLOR_BUFFER_BIT);
 
-   MAP->draw(rob[0], mode);
+   MAP->draw(*jub, mode);
 
    for (i=0; i<N_robots; i++) {
       rob[i].drawpath(mode);
-      rob[i].drawrobot(mode);
+      rob[i].drawrobot(mode, 0.0, 0.0, 0.0);
    }
 
    glFlush();

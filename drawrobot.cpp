@@ -148,7 +148,7 @@ return 0;
  * draw robot *
  **************/
 
-int robot::drawrobot(int mode){
+int robot::drawrobot(int mode, float relx, float rely, float reldir){
 
    int i;
    float x1,y1,x2,y2,x3,y3;
@@ -170,25 +170,28 @@ int robot::drawrobot(int mode){
       tmp = x2; x2 = y2; y2 = tmp;
       tmp = x3; x3 = y3; y3 = tmp;
    } else {
-      tmp = x1*cosf(dir) - y1*sinf(dir);
-      y1  = x1*sinf(dir) + y1*cosf(dir);
+      tmp = x1*cosf(dir-reldir) - y1*sinf(dir-reldir);
+      y1  = x1*sinf(dir-reldir) + y1*cosf(dir-reldir);
       x1  = tmp;
-      tmp = x2*cosf(dir) - y2*sinf(dir);
-      y2  = x2*sinf(dir) + y2*cosf(dir);
+      tmp = x2*cosf(dir-reldir) - y2*sinf(dir-reldir);
+      y2  = x2*sinf(dir-reldir) + y2*cosf(dir-reldir);
       x2  = tmp;
-      tmp = x3*cosf(dir) - y3*sinf(dir);
-      y3  = x3*sinf(dir) + y3*cosf(dir);
+      tmp = x3*cosf(dir-reldir) - y3*sinf(dir-reldir);
+      y3  = x3*sinf(dir-reldir) + y3*cosf(dir-reldir);
       x3  = tmp;
    }
 
    if (mode == FREE){
-      x1 += posx;
-      y1 += posy;
-      x2 += posx;
-      y2 += posy;
-      x3 += posx;
-      y3 += posy;
+      x1 += posx*CONV;
+      y1 += posy*CONV;
+      x2 += posx*CONV;
+      y2 += posy*CONV;
+      x3 += posx*CONV;
+      y3 += posy*CONV;
    }
+
+      x1 -= relx*CONV; x2 -= relx*CONV; x3 -= relx*CONV;
+      y1 -= rely*CONV; y2 -= rely*CONV; y3 -= rely*CONV;
 
    // draw circle around robot
 
@@ -200,11 +203,15 @@ int robot::drawrobot(int mode){
    glBegin(GL_POLYGON);
    for (i = 0; i < 40; i++){
       if (mode == FREE){
-         x = posx + diameter/2.0*cosf(2*PI*(float)i/(float)40) * CONV;
-         y = posy + diameter/2.0*sinf(2*PI*(float)i/(float)40) * CONV;
+         x = posx*CONV + diameter/2.0*cosf(2*PI*(float)i/(float)40) * CONV;
+         y = posy*CONV + diameter/2.0*sinf(2*PI*(float)i/(float)40) * CONV;
+         x -= relx*CONV;
+         y -= rely*CONV;
       } else if (mode == CNTR || mode == CNTRFIX){
          x = diameter/2.0*cosf(2*PI*(float)i/(float)40) * CONV;
          y = diameter/2.0*sinf(2*PI*(float)i/(float)40) * CONV;
+         x -= relx*CONV;
+         y -= rely*CONV;
       }
       glVertex3f(x, y, 0.0);
    }

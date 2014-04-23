@@ -51,8 +51,8 @@ int robot::update(float dt){
 
    // update the position and direction
 
-   posx += speed*cosf(dir)*dt * CONV; // only first order accurate. Exact is along the circular path
-   posy += speed*sinf(dir)*dt * CONV; // only first order accurate
+   posx += speed*cosf(dir)*dt; // only first order accurate. Exact is along the circular path
+   posy += speed*sinf(dir)*dt; // only first order accurate
 
    dir += omega*dt;
 
