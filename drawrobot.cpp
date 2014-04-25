@@ -17,7 +17,7 @@
  * draw robot path *
  *******************/
 
-int robot::drawpath(int mode){
+int robot::drawpath(float relx, float rely, float reldir){
 
    int i,N = 40;
    float arcx1[40], arcy1[40];
@@ -76,7 +76,6 @@ int robot::drawpath(int mode){
 
    // rotate the path to the robot direction
 
-   if (mode != CNTRFIX){
    for (i = 0; i < N; i++){
       tmp = arcx1[i]*cosf(dirp) - arcy1[i]*sinf(dirp);
       arcy1[i] = arcx1[i]*sinf(dirp) + arcy1[i]*cosf(dirp);
@@ -85,23 +84,9 @@ int robot::drawpath(int mode){
       arcy2[i] = arcx2[i]*sinf(dirp) + arcy2[i]*cosf(dirp);
       arcx2[i] = tmp;
    }
-   }
 
    // translate to origin
 
-   if (mode == CNTRFIX){
-      if ((omega > 0.0 && speed > 0.0) || (omega < 0.0 && speed < 0.0)){
-         for (i = 0; i < N; i++){
-            arcx1[i] -= radius*CONV;
-            arcx2[i] -= radius*CONV;
-         }
-      } else if ((omega < 0.0 && speed > 0.0) || (omega > 0.0 && speed < 0.0)) {
-         for (i = 0; i < N; i++){
-            arcx1[i] += radius*CONV;
-            arcx2[i] += radius*CONV;
-         }
-      }
-   } else {
    if (!is_strait){
       if ((omega > 0.0 && speed > 0.0) || (omega < 0.0 && speed < 0.0)){
          for (i = 0; i < N; i++){
@@ -119,16 +104,35 @@ int robot::drawpath(int mode){
          }
       }
    }
-   }
 
-   // translate to position
+   // translate to position of robot
 
-   if (mode == FREE)
-      for (i = 0; i < N; i++){
+      for (i = 0; i < N; i++) {
          arcx1[i] += posx;
          arcx2[i] += posx;
          arcy1[i] += posy;
          arcy2[i] += posy;
+      }
+
+   // translate to relative position of perspective
+
+      for (i = 0; i < N; i++) {
+         arcx1[i] -= relx;
+         arcy1[i] -= rely;
+         arcx2[i] -= relx;
+         arcy2[i] -= rely;
+      }
+
+   // rotate to its relative direction
+
+      for (i = 0; i < N; i++) {
+         tmp = arcx1[i]*cosf(reldir) + arcy1[i]*sinf(reldir);
+         arcy1[i]  = -arcx1[i]*sinf(reldir) + arcy1[i]*cosf(reldir);
+         arcx1[i]  = tmp;
+
+         tmp = arcx2[i]*cosf(reldir) + arcy2[i]*sinf(reldir);
+         arcy2[i]  = -arcx2[i]*sinf(reldir) + arcy2[i]*cosf(reldir);
+         arcx2[i]  = tmp;
       }
 
    glColor3ub(255, 255, 255);
@@ -148,13 +152,40 @@ return 0;
  * draw robot *
  **************/
 
-int robot::drawrobot(int mode, float relx, float rely, float reldir){
+int robot::drawrobot(float relx, float rely, float reldir) {
 
    int i;
    float x1,y1,x2,y2,x3,y3;
    float tmp;
    float x,y;
    const float sqrt3 = 1.7320508;
+
+   // draw circle around robot
+
+   if (collision == true)
+      glColor3ub(255, 0, 0);
+   else
+      glColor3ub(0, 255, 0);
+
+   glBegin(GL_POLYGON);
+   for (i = 0; i < 40; i++) {
+      x = posx*CONV + diameter/2.0*cosf(2*PI*(float)i/40.0) * CONV;
+      y = posy*CONV + diameter/2.0*sinf(2*PI*(float)i/40.0) * CONV;
+
+      // move circle to its relative position
+
+      x -= relx*CONV;
+      y -= rely*CONV;
+
+      // rotate circle to its relative direction
+
+      tmp = x*cosf(reldir) + y*sinf(reldir);
+      y  = -x*sinf(reldir) + y*cosf(reldir);
+      x  = tmp;
+
+      glVertex3f(x, y, 0.0);
+   }
+   glEnd();
 
    x1 = -diameter/2.0*sqrt3/2.0 * CONV;
    y1 = -diameter/2.0*0.6 * CONV;
@@ -165,57 +196,41 @@ int robot::drawrobot(int mode, float relx, float rely, float reldir){
 
    // rotate robot to its direction
 
-   if (mode == CNTRFIX) {
-      tmp = x1; x1 = y1; y1 = tmp;
-      tmp = x2; x2 = y2; y2 = tmp;
-      tmp = x3; x3 = y3; y3 = tmp;
-   } else {
-      tmp = x1*cosf(dir-reldir) - y1*sinf(dir-reldir);
-      y1  = x1*sinf(dir-reldir) + y1*cosf(dir-reldir);
-      x1  = tmp;
-      tmp = x2*cosf(dir-reldir) - y2*sinf(dir-reldir);
-      y2  = x2*sinf(dir-reldir) + y2*cosf(dir-reldir);
-      x2  = tmp;
-      tmp = x3*cosf(dir-reldir) - y3*sinf(dir-reldir);
-      y3  = x3*sinf(dir-reldir) + y3*cosf(dir-reldir);
-      x3  = tmp;
-   }
+   tmp = x1*cosf(dir) - y1*sinf(dir);
+   y1  = x1*sinf(dir) + y1*cosf(dir);
+   x1  = tmp;
+   tmp = x2*cosf(dir) - y2*sinf(dir);
+   y2  = x2*sinf(dir) + y2*cosf(dir);
+   x2  = tmp;
+   tmp = x3*cosf(dir) - y3*sinf(dir);
+   y3  = x3*sinf(dir) + y3*cosf(dir);
+   x3  = tmp;
 
-   if (mode == FREE){
-      x1 += posx*CONV;
-      y1 += posy*CONV;
-      x2 += posx*CONV;
-      y2 += posy*CONV;
-      x3 += posx*CONV;
-      y3 += posy*CONV;
-   }
+   // move robot to its position
 
-      x1 -= relx*CONV; x2 -= relx*CONV; x3 -= relx*CONV;
-      y1 -= rely*CONV; y2 -= rely*CONV; y3 -= rely*CONV;
+   x1 += posx*CONV;
+   y1 += posy*CONV;
+   x2 += posx*CONV;
+   y2 += posy*CONV;
+   x3 += posx*CONV;
+   y3 += posy*CONV;
 
-   // draw circle around robot
+   // move robot to its relative position
 
-   if (collision == true)
-      glColor3ub(255, 0, 0);
-   else
-      glColor3ub(0, 255, 0);
+   x1 -= relx*CONV; x2 -= relx*CONV; x3 -= relx*CONV;
+   y1 -= rely*CONV; y2 -= rely*CONV; y3 -= rely*CONV;
 
-   glBegin(GL_POLYGON);
-   for (i = 0; i < 40; i++){
-      if (mode == FREE){
-         x = posx*CONV + diameter/2.0*cosf(2*PI*(float)i/(float)40) * CONV;
-         y = posy*CONV + diameter/2.0*sinf(2*PI*(float)i/(float)40) * CONV;
-         x -= relx*CONV;
-         y -= rely*CONV;
-      } else if (mode == CNTR || mode == CNTRFIX){
-         x = diameter/2.0*cosf(2*PI*(float)i/(float)40) * CONV;
-         y = diameter/2.0*sinf(2*PI*(float)i/(float)40) * CONV;
-         x -= relx*CONV;
-         y -= rely*CONV;
-      }
-      glVertex3f(x, y, 0.0);
-   }
-   glEnd();
+   // rotate robot to its relative direction
+
+   tmp = x1*cosf(reldir) + y1*sinf(reldir);
+   y1  = -x1*sinf(reldir) + y1*cosf(reldir);
+   x1  = tmp;
+   tmp = x2*cosf(reldir) + y2*sinf(reldir);
+   y2  = -x2*sinf(reldir) + y2*cosf(reldir);
+   x2  = tmp;
+   tmp = x3*cosf(reldir) + y3*sinf(reldir);
+   y3  = -x3*sinf(reldir) + y3*cosf(reldir);
+   x3  = tmp;
 
    // draw robot
 
@@ -225,7 +240,6 @@ int robot::drawrobot(int mode, float relx, float rely, float reldir){
       glVertex3f(x2, y2, 0.0);
       glVertex3f(x3, y3, 0.0);
    glEnd();
-
 
 return 0;
 }

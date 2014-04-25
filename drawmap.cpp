@@ -15,14 +15,11 @@
 #define CIRCRES 80
 #define PI 3.1415926
 
-int map::draw(robot rob, int mode){
+int map::draw(float relx, float rely, float reldir){
 
    int i,k;
-   float x,y,x0,y0,dir,tmp;
+   float x,y,tmp;
 
-   x0 = rob.getposx();
-   y0 = rob.getposy();
-   dir = rob.getdir() - PI/2.0;
    /**************
     * draw lines *
     **************/
@@ -33,28 +30,26 @@ int map::draw(robot rob, int mode){
       glBegin(GL_LINES);
         x = x1[i];
         y = y1[i];
-        if (mode == 1 || mode == 2) {
-           x -= x0;
-           y -= y0;
-        }
-        if (mode == 2) {
-           tmp = x*cosf(dir) + y*sinf(dir);
-           y   = -x*sinf(dir) + y*cosf(dir);
-           x = tmp;
-        }
+
+        x -= relx;
+        y -= rely;
+        tmp = x*cosf(reldir) + y*sinf(reldir);
+        y   = -x*sinf(reldir) + y*cosf(reldir);
+        x = tmp;
+
         glVertex3f(x, y, 0.0);
+
         x = x2[i];
         y = y2[i];
-        if (mode == 1 || mode == 2) {
-           x -= x0;
-           y -= y0;
-        }
-        if (mode == 2) {
-           tmp = x*cosf(dir) + y*sinf(dir);
-           y   = -x*sinf(dir) + y*cosf(dir);
-           x = tmp;
-        }
+
+        x -= relx;
+        y -= rely;
+        tmp = x*cosf(reldir) + y*sinf(reldir);
+        y   = -x*sinf(reldir) + y*cosf(reldir);
+        x = tmp;
+
         glVertex3f(x, y, 0.0);
+
       glEnd();
    }
 
@@ -65,17 +60,14 @@ int map::draw(robot rob, int mode){
    for (i = 0; i < Ncircles; i++){
       glBegin(GL_POLYGON);
       for (k = 0; k < CIRCRES; k++){
-         x = (centerx[i] + radii[i]*cosf(2*PI*(float)k/(float)CIRCRES))*CONV;
-         y = (centery[i] + radii[i]*sinf(2*PI*(float)k/(float)CIRCRES))*CONV;
-         if (mode == 1 || mode == 2) {
-            x -= x0;
-            y -= y0;
-         }
-         if (mode == 2) {
-            tmp = x*cosf(dir) + y*sinf(dir);
-            y   = -x*sinf(dir) + y*cosf(dir);
-            x = tmp;
-         }
+         x = (centerx[i] + radii[i]*cosf(2.0*PI*(float)k/(float)CIRCRES))*CONV;
+         y = (centery[i] + radii[i]*sinf(2.0*PI*(float)k/(float)CIRCRES))*CONV;
+
+         x -= relx; y -= rely;
+         tmp = x*cosf(reldir) + y*sinf(reldir);
+         y   = -x*sinf(reldir) + y*cosf(reldir);
+         x = tmp;
+
          glVertex3f(x, y, 0.0);
       }
       glEnd();

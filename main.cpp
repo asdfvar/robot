@@ -9,6 +9,8 @@
 #include <math.h>
 #include <time.h>
 
+#define PI 3.1415926
+
 float gettime(void);
 
 int N_robots=4;
@@ -16,6 +18,8 @@ map *MAP = new map();
 robot rob[4];
 robot *jub = &rob[0];
 int mode = 1;
+
+float relx=0.0, rely=0.0, reldir=0.0;
 
 /********
  * idle *
@@ -32,6 +36,24 @@ void idle(void){
       rob[i].collide(MAP);
    }
 
+   if (mode == FREE) {
+      reldir = 0.0;
+      relx   = 0.0;
+      rely   = 0.0;
+   } else if (mode == CNTRFIX) {
+      reldir = jub->getdir() - 0.5*PI;
+      relx   = jub->getposx();
+      rely   = jub->getposy();
+   } else if (mode == CNTR) {
+      reldir = 0.0;
+      relx   = jub->getposx();
+      rely   = jub->getposy();
+   } else {
+      reldir = 0.0;
+      relx   = 0.0;
+      rely   = 0.0;
+   }
+
    glutPostRedisplay();
 }
 
@@ -45,11 +67,11 @@ void move(void){
 
    glClear(GL_COLOR_BUFFER_BIT);
 
-   MAP->draw(*jub, mode);
+   MAP->draw(relx, rely, reldir);
 
    for (i=0; i<N_robots; i++) {
-      rob[i].drawpath(mode);
-      rob[i].drawrobot(mode, 0.0, 0.0, 0.0);
+      jub->drawpath(relx, rely, reldir);
+      jub->drawrobot(relx, rely, reldir);
    }
 
    glFlush();

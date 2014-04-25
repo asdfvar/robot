@@ -16,7 +16,7 @@ class map{
 
       int loadlines(float *X1, float *Y1, float *X2, float *Y2, int N);
       int loadcircles(float *CX, float *CY, float *R, int N);
-      int draw(robot rob, int mode);
+      int draw(float relx, float rely, float reldir);
 
       float getdist(float x, float y);
 
