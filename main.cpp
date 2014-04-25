@@ -17,6 +17,7 @@ int N_robots=4;
 map *MAP = new map();
 robot rob[4];
 robot *jub = &rob[0];
+int irob = 0;
 int mode = 1;
 
 float relx=0.0, rely=0.0, reldir=0.0;
@@ -70,8 +71,8 @@ void move(void){
    MAP->draw(relx, rely, reldir);
 
    for (i=0; i<N_robots; i++) {
-      jub->drawpath(relx, rely, reldir);
-      jub->drawrobot(relx, rely, reldir);
+      rob[i].drawpath(relx, rely, reldir);
+      rob[i].drawrobot(relx, rely, reldir);
    }
 
    glFlush();
@@ -83,27 +84,27 @@ void move(void){
 
 void keyboardDown(unsigned char key, int x, int y){
 
-   int i;
+   jub->move(key);
 
-   for (i=0; i<N_robots; i++) {
-      rob[i].move(key);
-
-      // quit
-      if (key == 'q'){
-         delete MAP;
-         std::cout << "program exit" << std::endl;
-         exit(1);
-      }
-      else if (key == 'C')
-         mode = CNTRFIX;
-      else if (key == 'c')
-         mode = CNTR;
-      else if (key == 'g')
-         mode = FREE;
-      else if (key == '0')
-         rob[i].setposxy(0.0, 0.0);
+   // quit
+   if (key == 'q'){
+      delete MAP;
+      std::cout << "program exit" << std::endl;
+      exit(1);
    }
+   else if (key == 'C')
+      mode = CNTRFIX;
+   else if (key == 'c')
+      mode = CNTR;
+   else if (key == 'g')
+      mode = FREE;
+   else if (key == '0')
+      jub->setposxy(0.0, 0.0);
+   else if (key == 't')
+      jub = &rob[++irob % N_robots];
+      
 }
+
 
 /***************
  * keyboard Up *
@@ -114,7 +115,7 @@ void keyboardUp(unsigned char key, int x, int y){
    int i;
 
    for (i=0; i<N_robots; i++) {
-      rob[i].unmove(key);
+      jub->unmove(key);
    }
 }
 

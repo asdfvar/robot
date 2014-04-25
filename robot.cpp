@@ -9,6 +9,9 @@ robot::robot(float position_x, float position_y, float direction){
    omega = 0.0f;
    is_strait = true;
    collision = false;
+   mode = 0;
+   mmove = 0.0;
+   tturn = 0.0;
 }
 
 robot::robot(){
@@ -20,6 +23,9 @@ robot::robot(){
    omega = 0.0f;
    is_strait = true;
    collision = false;
+   mode = 0;
+   mmove = 0.0;
+   tturn = 0.0;
 }
 
 robot::~robot(){}

@@ -20,9 +20,8 @@
 
 enum {DEF = 0, MOV};
 
-static int mode = DEF;
-static float mmove = 0.0;
-static float tturn = 0.0;
+//static float mmove = 0.0;
+//static float tturn = 0.0;
 
 int robot::update(float dt){
 

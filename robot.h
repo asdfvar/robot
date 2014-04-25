@@ -40,7 +40,11 @@ class robot{
       int collide(map *MAP);
 
    private:
-   
+
+      int mode;     // robot movement mode
+      float mmove;  // robot movement parameters (special mode)
+      float tturn;  // robot movement parameters (special mode)
+
       float posx;   // x-position
       float posy;   // y-position
       float dir;    // direction (radians)
