@@ -102,7 +102,12 @@ void keyboardDown(unsigned char key, int x, int y){
       jub->setposxy(0.0, 0.0);
    else if (key == 't')
       jub = &rob[++irob % N_robots];
-      
+   else if (key == 'T') {
+      --irob;
+      if (irob < 0) {irob += N_robots;}
+      jub = &rob[irob % N_robots];
+   }
+
 }
 
 
