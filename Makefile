@@ -1,9 +1,9 @@
 CC = g++
-FLAGS = -Wall
+FLAGS = -Wall -lm
 
 OBJ = main.o robot.o update.o map.o \
       drawmap.o drawrobot.o loadmap.o \
-      collide.o gettime.o
+      collide.o gettime.o distance.o
 EXE = robot
 TRASH = robot.h.gch constants.h.gch
 
@@ -12,7 +12,7 @@ $(EXE): $(OBJ)
 	$(CC) $(FLAGS) $(OBJ) -lglut -o $(EXE)
 
 main.o: main.cpp robot.h
-	$(CC) $(FLAGS) -lglut -lm main.cpp -c
+	$(CC) $(FLAGS) -lglut main.cpp -c
 
 update.o: update.cpp robot.h constants.h
 	$(CC) $(FLAGS) -lm robot.h constants.h update.cpp -c

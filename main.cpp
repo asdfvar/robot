@@ -99,7 +99,7 @@ void keyboardDown(unsigned char key, int x, int y){
    else if (key == 'g')
       mode = FREE;
    else if (key == '0')
-      jub->setposxy(0.0, 0.0);
+      jub->setposxy(0.0, 0.0, 0.0);
    else if (key == 't')
       jub = &rob[++irob % N_robots];
    else if (key == 'T') {
@@ -146,10 +146,10 @@ int main(int argc, char** argv){
 
    MAP->loadcircles(&cx[0], &cy[0], &rad[0], 3);
 
-   rob[0].setposxy(0.0, 0.0);
-   rob[1].setposxy(0.25, 0.0);
-   rob[2].setposxy(0.5, 0.0);
-   rob[3].setposxy(0.75, 0.0);
+   rob[0].setposxy(0.0, 0.0, 0.0);
+   rob[1].setposxy(0.25, 0.0, 0.0);
+   rob[2].setposxy(0.5, 0.0, 0.0);
+   rob[3].setposxy(0.75, 0.0, 0.0);
 
    glutInit(&argc, argv);
    glutInitDisplayMode(GLUT_RGB|GLUT_SINGLE);

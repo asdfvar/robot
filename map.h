@@ -28,6 +28,8 @@ class map{
       float *tmp, *radii, *centerx, *centery;   // circle parameters
       int Ncircles;
 
+      float distance(float qx, float qy, float qdir);
+
 };
 
 #endif

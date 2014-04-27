@@ -73,5 +73,9 @@ int map::draw(float relx, float rely, float reldir){
       glEnd();
    }
 
+   // test distance
+
+   std::cout << distance(relx, rely, reldir) << std::endl;
+
    return 0;
 }

@@ -42,9 +42,10 @@ float robot::getdir(void){
    return dir;
 }
 
-int robot::setposxy(float x, float y){
+int robot::setposxy(float x, float y, float dr){
    posx = x;
    posy = y;
+   dir  = dr;
 
    return 0;
 }

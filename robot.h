@@ -30,7 +30,7 @@ class robot{
       float getposy();
       float getdir();
 
-      int setposxy(float x, float y);
+      int setposxy(float x, float y, float dir);
 
       int drawpath(float relx, float rely, float reldir);
       int drawrobot(float relx, float rely, float reldir);
