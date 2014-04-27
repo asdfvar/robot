@@ -42,7 +42,7 @@ void idle(void){
       relx   = 0.0;
       rely   = 0.0;
    } else if (mode == CNTRFIX) {
-      reldir = jub->getdir() - 0.5*PI;
+      reldir = jub->getdir();
       relx   = jub->getposx();
       rely   = jub->getposy();
    } else if (mode == CNTR) {
@@ -68,11 +68,11 @@ void move(void){
 
    glClear(GL_COLOR_BUFFER_BIT);
 
-   MAP->draw(relx, rely, reldir);
+   MAP->draw(relx, rely, reldir - 0.5*PI);
 
    for (i=0; i<N_robots; i++) {
-      rob[i].drawpath(relx, rely, reldir);
-      rob[i].drawrobot(relx, rely, reldir);
+      rob[i].drawpath(relx, rely, reldir - 0.5*PI);
+      rob[i].drawrobot(relx, rely, reldir - 0.5*PI);
    }
 
    glFlush();
@@ -133,12 +133,12 @@ int main(int argc, char** argv){
    float x1[4],x2[4],y1[4],y2[4];
    float cx[3],cy[3],rad[3];
 
-   x1[0] = 0.0; x1[1] = -0.5; x1[2] = -0.5; x1[3] = 0.5;
-   y1[0] = 0.0; y1[1] = -0.5; y1[2] = 0.5; y1[3] = -0.5;
-   x2[0] = 0.5; x2[1] = 0.0; x2[2] = 0.5; x2[3] = 0.5;
-   y2[0] = 0.5; y2[1] = 1.0; y2[2] = -0.5; y2[3] = 0.5;
+   x1[0] = 0.0;// x1[1] = -0.5; x1[2] = -0.5; x1[3] = 0.5;
+   y1[0] = 0.0;// y1[1] = -0.5; y1[2] = 0.5; y1[3] = -0.5;
+   x2[0] = 0.5;// x2[1] = 0.0; x2[2] = 0.5; x2[3] = 0.5;
+   y2[0] = 0.5;// y2[1] = 1.0; y2[2] = -0.5; y2[3] = 0.5;
 
-   MAP->loadlines(&x1[0], &y1[0], &x2[0], &y2[0], 4);
+   MAP->loadlines(&x1[0], &y1[0], &x2[0], &y2[0], 1);
 
    cx[0] = 0.0; cx[1] = 0.5; cx[2] = -0.5;
    cy[0] = 0.0; cy[1] = 0.5; cy[2] = 0.5;;

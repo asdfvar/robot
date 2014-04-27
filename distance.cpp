@@ -1,5 +1,6 @@
 #include <math.h>
 #include "map.h"
+#include <iostream>
 
 #define MAXDIST 10.0 // meters
 #define MIN(A,B) (A) < (B) ? (A) : (B)
@@ -37,7 +38,7 @@ float map::distance(float qx, float qy, float qdir) {
       // return the max distance if look
       // direction is parallel to the line
 
-      if (dotpr < EPS) dist = MAXDIST;
+      if (dotpr < EPS && false) dist = MAXDIST;
 
       // otherwise:
 
@@ -60,12 +61,13 @@ float map::distance(float qx, float qy, float qdir) {
          // of the line is not between the two points
          // that define the line
 
-         else if (t >= 0.0 && dotpr > 0.0) dist = MAXDIST;
+         else if (t >= 0.0 && dotpr > 0.0 && false) dist = MAXDIST;
 
          // return the distance to the line if it
          // actually hits the line between the two points
 
          else dist = sqrtf( (q2x - qx) * (q2x - qx) + (q2y - qy) * (q2y - qy) );
+std::cout << qdir << " " << qx << " " << qy << " " << x1[i] << " " << x2[i] << " " << y1[i] << " " << y2[i] << std::endl;
       }
 
    mindist = MIN(mindist, dist);
