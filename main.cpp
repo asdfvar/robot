@@ -13,9 +13,9 @@
 
 float gettime(void);
 
-int N_robots=4;
+int N_robots=1;
 map *MAP = new map();
-robot rob[4];
+robot rob[1];
 robot *jub = &rob[0];
 int irob = 0;
 int mode = 1;
@@ -133,23 +133,22 @@ int main(int argc, char** argv){
    float x1[4],x2[4],y1[4],y2[4];
    float cx[3],cy[3],rad[3];
 
-   x1[0] = 0.0;// x1[1] = -0.5; x1[2] = -0.5; x1[3] = 0.5;
-   y1[0] = 0.0;// y1[1] = -0.5; y1[2] = 0.5; y1[3] = -0.5;
+   x1[0] = 0.5;// x1[1] = -0.5; x1[2] = -0.5; x1[3] = 0.5;
+   y1[0] = 0.5;// y1[1] = -0.5; y1[2] = 0.5; y1[3] = -0.5;
    x2[0] = 0.5;// x2[1] = 0.0; x2[2] = 0.5; x2[3] = 0.5;
-   y2[0] = 0.5;// y2[1] = 1.0; y2[2] = -0.5; y2[3] = 0.5;
+   y2[0] = -0.5;// y2[1] = 1.0; y2[2] = -0.5; y2[3] = 0.5;
 
    MAP->loadlines(&x1[0], &y1[0], &x2[0], &y2[0], 1);
 
+#if 0
    cx[0] = 0.0; cx[1] = 0.5; cx[2] = -0.5;
    cy[0] = 0.0; cy[1] = 0.5; cy[2] = 0.5;;
    rad[0] = 0.2; rad[1] = 0.1; rad[2] = 0.3;
 
    MAP->loadcircles(&cx[0], &cy[0], &rad[0], 3);
+#endif
 
    rob[0].setposxy(0.0, 0.0, 0.0);
-   rob[1].setposxy(0.25, 0.0, 0.0);
-   rob[2].setposxy(0.5, 0.0, 0.0);
-   rob[3].setposxy(0.75, 0.0, 0.0);
 
    glutInit(&argc, argv);
    glutInitDisplayMode(GLUT_RGB|GLUT_SINGLE);

@@ -38,15 +38,21 @@ float map::distance(float qx, float qy, float qdir) {
       // return the max distance if look
       // direction is parallel to the line
 
-      if (dotpr < EPS && false) dist = MAXDIST;
+      if (dotpr > 1.0 - EPS) dist = MAXDIST;
 
       // otherwise:
 
       else {
 
+#if 0 
          t  = ( x1[i] + x2[i] ) * nqx + ( y1[i] + y2[i] ) * nqy;
          t -= 2.0 * ( qx*nqx + qy*nqy );
          t /= 2.0 * ( nqx*nqx + nqy*nqy );
+#endif
+
+         t  = (x1[i] - qx) * nqx + (y1[i] - qy) * nqy;
+         t += (x2[i] - qx) * nqx + (y2[i] - qy) * nqy;
+         t *= 0.5;
 
          q2x = qx + t*nqx; q2y = qy + t*nqy;
          dotpr = (x2[i] - q2x) * (x1[i] - q2x) +
@@ -55,19 +61,18 @@ float map::distance(float qx, float qy, float qdir) {
          // return the max distance if the line
          // is behind the look direction
 
-         if (t < 0.0) dist = MAXDIST;
+         if (t < 0.0) {dist = MAXDIST;
 
          // return the max distance if the intersection
          // of the line is not between the two points
          // that define the line
 
-         else if (t >= 0.0 && dotpr > 0.0 && false) dist = MAXDIST;
+         }else if (t >= 0.0 && dotpr > 0.0 && false){ dist = MAXDIST;
 
-         // return the distance to the line if it
          // actually hits the line between the two points
 
-         else dist = sqrtf( (q2x - qx) * (q2x - qx) + (q2y - qy) * (q2y - qy) );
-std::cout << qdir << " " << qx << " " << qy << " " << x1[i] << " " << x2[i] << " " << y1[i] << " " << y2[i] << std::endl;
+         }else {dist = sqrtf( (q2x - qx) * (q2x - qx) + (q2y - qy) * (q2y - qy) );}
+std::cout << t << " " << qdir << " " << q2x << " " << q2y << " " << x1[i] << " " << x2[i] << " " << y1[i] << " " << y2[i] << std::endl;
       }
 
    mindist = MIN(mindist, dist);
