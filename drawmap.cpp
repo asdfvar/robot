@@ -77,7 +77,6 @@ int map::draw(float relx, float rely, float reldir){
 
    float dist;
    dist = distance(relx, rely, reldir + 0.5*PI);
-   std::cout << distance(relx, rely, reldir + 0.5*PI) << std::endl;
 
 glLineWidth(2.5); 
 glColor3f(1.0, 0.0, 0.0);
