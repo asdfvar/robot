@@ -19,6 +19,7 @@ class map{
       int draw(float relx, float rely, float reldir);
 
       float getdist(float x, float y);
+      int localmap(float *dist, float angle[], int N, float xloc, float yloc, float dir);
 
    private:
 
