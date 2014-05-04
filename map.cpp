@@ -38,6 +38,7 @@ map::~map(){
 
 /*
  * get the distance from a point (x,y)
+ * to the nearest object on the map
  */
 
 float map::getdist(float x, float y) {
