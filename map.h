@@ -1,6 +1,8 @@
 #ifndef _MAP_H_
 #define _MAP_H_
 
+//#define MAP_SIZE 16384
+
 #include "robot.h"
 class robot;
 
@@ -23,10 +25,9 @@ class map{
 
    private:
 
-      float *mem;
-      float *x1, *y1, *x2, *y2;                 // line parameters
+      float *x1, *y1, *x2, *y2;           // line parameters
       int Nlines;
-      float *tmp, *radii, *centerx, *centery;   // circle parameters
+      float *radii, *centerx, *centery;   // circle parameters
       int Ncircles;
 
 

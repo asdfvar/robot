@@ -6,6 +6,7 @@ class map;
 
 #define MINOMEGA 0.01 // rad/s
 #define MINSPEED 0.01 // m/s
+#define N_dist 20
 
 enum {FREE=0, CNTR, CNTRFIX};
 
@@ -55,7 +56,7 @@ class robot{
 
       float diameter; // robot diameter
 
-      float *dist, *angle; // local map details
+      float dist[N_dist], angle[N_dist]; // local map details
 
      /*******************
       * visual arc path *

@@ -8,24 +8,28 @@
 #define MIN(A,B) A < B ? A : B
 #define ABS(Z) Z < 0.0 ? -Z : Z
 
+static float *mem;
+
 map::map(){
 
-   int memsize = 7*MAP_SIZE;
+   mem = new float[7*MAP_SIZE];
 
-   if ((mem = (float*) calloc(memsize, sizeof(float))) == NULL)
-      std::cout << "Error allocating memory for the map" << std::endl;
-
-   std::cout << (memsize*sizeof(float))/1024 << 
+   std::cout << (7*MAP_SIZE*sizeof(float))/1024 << 
       " MB allocated for mapping" << std::endl;
 
-   x1 = mem;
+   float *Line_mem, *Circ_mem;
+
+   Line_mem = mem;
+   Circ_mem = mem + 4*MAP_SIZE;
+
+   x1 = Line_mem;
    y1 = x1 + MAP_SIZE;
    x2 = y1 + MAP_SIZE;
    y2 = x2 + MAP_SIZE;
 
-   centerx  = y2      + MAP_SIZE;
-   centery  = centerx + MAP_SIZE;
-   radii    = centery + MAP_SIZE;
+   centerx  = Circ_mem + MAP_SIZE;
+   centery  = centerx  + MAP_SIZE;
+   radii    = centery  + MAP_SIZE;
 
    Nlines = Ncircles = 0;
 }

@@ -12,27 +12,14 @@ class map;
 
 #define PI 3.1415926535
 
-//static float dist[20], angle[20];
-static int N=20;
-static bool initdone = false;
-
 int robot::getlocalmap(map* MAP) {
 
    int i;
 
-   if (!initdone++) {
-      dist  = new float[20];
-      angle = new float[20];
-      std::cout << "allocated "
-                << (sizeof(*dist) + sizeof(*angle))*N
-                << " bytes for local mapping"
-                << std::endl;
-   }
+   for (i = 0; i < N_dist; i++)
+      angle[i] = -2.0 + (float) i / (float) (N_dist - 1) * 4.0;
 
-   for (i = 0; i < N; i++)
-      angle[i] = -2.0 + (float) i / (float) (N - 1) * 4.0;
-
-   for (i = 0; i < N; i++)
+   for (i = 0; i < N_dist; i++)
       dist[i] = MAP->distance(posx, posy, angle[i] + dir);
 
    return 0;
@@ -52,7 +39,7 @@ int robot::drawlocalmap(float relx, float rely, float reldir) {
 
    glLineWidth(2.5);
    glColor3f(1.0, 0.0, 0.0);
-   for (i = 0; i < N; i++) {
+   for (i = 0; i < N_dist; i++) {
       glBegin(GL_LINES);
       glVertex3f(x*CONV, y*CONV, 0.0);
       glVertex3f(x*CONV + dist[i]*cosf(angle[i] + dir - reldir)*CONV,

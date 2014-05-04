@@ -90,6 +90,7 @@ void keyboardDown(unsigned char key, int x, int y){
 
    // quit
    if (key == 'q'){
+std::cout << "about to delete" << std::endl;
       delete MAP;
       std::cout << "program exit" << std::endl;
       exit(1);
