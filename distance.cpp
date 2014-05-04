@@ -75,9 +75,25 @@ float map::distance(float qx, float qy, float qdir) {
    * Circles *
    ***********/
 
+   float px, py;
+   float ndp, D;
+
    for (i = 0; i < Ncircles; i++) {
 
-      // stuff
+      px = centerx[i] - qx;
+      py = centery[i] - qy;
+
+      ndp = nqx*px + nqy*py;
+
+      D = ndp*ndp + radii[i]*radii[i] - (px*px + py*py);
+
+      if (D < 0.0) { dist = MAXDIST; }
+
+      else { dist = ndp - sqrtf(D); }
+
+      if (dist < 0.0) { dist = MAXDIST; }
+
+      mindist = MIN(mindist, dist);
 
    }
 
