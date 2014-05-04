@@ -31,9 +31,11 @@ class robot{
       float getdir();
 
       int setposxy(float x, float y, float dir);
+      int getlocalmap(map*);
 
       int drawpath(float relx, float rely, float reldir);
       int drawrobot(float relx, float rely, float reldir);
+      int drawlocalmap(float relx, float rely, float reldir);
 
       int move(unsigned char key);
       int unmove(unsigned char key);
@@ -52,6 +54,8 @@ class robot{
       float omega;  // rotation rate (radians/second)
 
       float diameter; // robot diameter
+
+      float *dist, *angle; // local map details
 
      /*******************
       * visual arc path *

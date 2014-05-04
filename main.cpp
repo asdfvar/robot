@@ -35,6 +35,7 @@ void idle(void){
    for (i=0; i<N_robots; i++) {
       rob[i].update(dt);
       rob[i].collide(MAP);
+      rob[i].getlocalmap(MAP);
    }
 
    if (mode == FREE) {
@@ -73,6 +74,7 @@ void move(void){
    for (i=0; i<N_robots; i++) {
       rob[i].drawpath(relx, rely, reldir - 0.5*PI);
       rob[i].drawrobot(relx, rely, reldir - 0.5*PI);
+      rob[i].drawlocalmap(relx, rely, reldir - 0.5*PI);
    }
 
    glFlush();

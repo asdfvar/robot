@@ -19,7 +19,7 @@ class map{
       int draw(float relx, float rely, float reldir);
 
       float getdist(float x, float y);
-      int localmap(float *dist, float angle[], int N, float xloc, float yloc, float dir);
+      float distance(float qx, float qy, float qdir);
 
    private:
 
@@ -29,7 +29,6 @@ class map{
       float *tmp, *radii, *centerx, *centery;   // circle parameters
       int Ncircles;
 
-      float distance(float qx, float qy, float qdir);
 
 };
 

@@ -73,17 +73,5 @@ int map::draw(float relx, float rely, float reldir){
       glEnd();
    }
 
-   // test distance
-
-   float dist;
-   dist = distance(relx, rely, reldir + 0.5*PI);
-
-glLineWidth(2.5); 
-glColor3f(1.0, 0.0, 0.0);
-glBegin(GL_LINES);
-glVertex3f(0.0, 0.0, 0.0);
-glVertex3f(0, dist, 0);
-glEnd();
-
    return 0;
 }
