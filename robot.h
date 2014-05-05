@@ -6,7 +6,7 @@ class map;
 
 #define MINOMEGA 0.01 // rad/s
 #define MINSPEED 0.01 // m/s
-#define N_dist 20
+#define n_dist 20
 
 enum {FREE=0, CNTR, CNTRFIX};
 
@@ -37,6 +37,7 @@ class robot{
       int drawpath(float relx, float rely, float reldir);
       int drawrobot(float relx, float rely, float reldir);
       int drawlocalmap(float relx, float rely, float reldir);
+      int getmap(float *distances, float *directions);
 
       int move(unsigned char key);
       int unmove(unsigned char key);
@@ -56,7 +57,8 @@ class robot{
 
       float diameter; // robot diameter
 
-      float dist[N_dist], angle[N_dist]; // local map details
+      int N_dist;
+      float dist[n_dist], angle[n_dist]; // local map details
 
      /*******************
       * visual arc path *
