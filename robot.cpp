@@ -74,3 +74,17 @@ int robot::setposxy(float x, float y, float dr){
 
    return 0;
 }
+
+int robot::setspeed(float spd) {
+
+   speed = spd;
+
+   return 0;
+}
+
+int robot::setdir(float direction) {
+
+   dir = direction;
+
+   return 0;
+}

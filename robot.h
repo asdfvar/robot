@@ -8,7 +8,7 @@ class map;
 #define MINSPEED 0.01 // m/s
 #define n_dist 20
 
-enum {FREE=0, CNTR, CNTRFIX};
+enum {FREE=0, CNTR, CNTRFIX, AUT};
 
 class robot{
    public:
@@ -32,6 +32,9 @@ class robot{
       float getdir();
 
       int setposxy(float x, float y, float dir);
+      int setspeed(float spd);
+      int setdir(float direction);
+
       int getlocalmap(map*);
 
       int drawpath(float relx, float rely, float reldir);

@@ -8,6 +8,7 @@
 #include "map.h"
 #include <math.h>
 #include <time.h>
+#include "avoidance.h"
 
 #define PI 3.1415926
 
@@ -21,6 +22,8 @@ int irob = 0;
 int mode = 1;
 
 float relx=0.0, rely=0.0, reldir=0.0;
+
+avoidance avi;
 
 /********
  * idle *
@@ -37,6 +40,10 @@ void idle(void){
       rob[i].collide(MAP);
       rob[i].getlocalmap(MAP);
    }
+
+   if (mode == AUT)
+      avi.action(jub);
+avi.action(jub);
 
    if (mode == FREE) {
       reldir = 0.0;
@@ -109,7 +116,8 @@ std::cout << "about to delete" << std::endl;
       --irob;
       if (irob < 0) {irob += N_robots;}
       jub = &rob[irob % N_robots];
-   }
+   } else if (key == 'A')
+      mode = AUT;
 
 }
 

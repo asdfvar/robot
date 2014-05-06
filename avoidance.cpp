@@ -1,6 +1,7 @@
 #include "avoidance.h"
 #include "robot.h"
 #include <cmath>
+#include <iostream>
 
 #define EPS 0.00001
 
@@ -10,11 +11,24 @@ avoidance::avoidance() {}
 
 int avoidance::action(robot *rob) {
 
+   float v1[2], v2[2];
+
    N_dist = rob->getmap(&dist[0], &angle[0]);
+
+   eigenvectors(&v1[0], &v2[0]);
+
+std::cout << v1[0] << ", " << v1[1] << std::endl;
+   //rob->setdir(atan2f(v1[1],v1[0]));
 
    return 0;
 
 }
+
+//////////////////////////////////////
+
+avoidance::~avoidance(void) {}
+
+//////////////////////////////////////
 
 int avoidance::eigenvectors(float *v1, float *v2) {
 

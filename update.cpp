@@ -1,5 +1,4 @@
 /*
- *
  * the unit meters are somewhat redundant here. Any unit of displacement is acceptable as long as it
  * is consistent
  */
@@ -18,10 +17,12 @@
 
 #define ABS(A) (A > 0.0 ? A : -A)
 
-enum {DEF = 0, MOV};
+enum {DEF = 0, MOV, AUTO};
 
-//static float mmove = 0.0;
-//static float tturn = 0.0;
+/*********************************
+ * update the robot based on its
+ * current parameters
+ *********************************/
 
 int robot::update(float dt){
 
@@ -50,8 +51,8 @@ int robot::update(float dt){
 
    // update the position and direction
 
-   posx += speed*cosf(dir)*dt; // only first order accurate. Exact is along the circular path
-   posy += speed*sinf(dir)*dt; // only first order accurate
+   posx += speed*cosf(dir)*dt; // only first order accurate
+   posy += speed*sinf(dir)*dt; // Exact is along the circular path
 
    dir += omega*dt;
 
@@ -107,6 +108,10 @@ int robot::move(unsigned char key){
          speed = 0.0;
          omega = 0.0;
          break;
+      case 'A':
+         mode = AUTO;
+         speed = 0.0;
+         omega = 0.0;
       default:
          break;
    }
