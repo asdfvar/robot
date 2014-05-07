@@ -6,7 +6,7 @@ class map;
 
 #define MINOMEGA 0.01 // rad/s
 #define MINSPEED 0.01 // m/s
-#define n_dist 20
+#define n_dist 200
 
 enum {FREE=0, CNTR, CNTRFIX, AUT};
 

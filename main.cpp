@@ -29,7 +29,7 @@ avoidance avi;
  * idle *
  ********/
 
-void idle(void){
+void idle(void) {
 
    int i;
    float dt;
@@ -43,7 +43,6 @@ void idle(void){
 
    if (mode == AUT)
       avi.action(jub);
-avi.action(jub);
 
    if (mode == FREE) {
       reldir = 0.0;
@@ -84,6 +83,7 @@ void move(void){
       rob[i].drawlocalmap(relx, rely, reldir - 0.5*PI);
    }
 
+avi.action(jub);
    glFlush();
 }
 
@@ -97,7 +97,6 @@ void keyboardDown(unsigned char key, int x, int y){
 
    // quit
    if (key == 'q'){
-std::cout << "about to delete" << std::endl;
       delete MAP;
       std::cout << "program exit" << std::endl;
       exit(1);
@@ -161,7 +160,7 @@ int main(int argc, char** argv){
 
    glutInit(&argc, argv);
    glutInitDisplayMode(GLUT_RGB|GLUT_SINGLE);
-   glutInitWindowSize(900, 900);
+   glutInitWindowSize(400, 400);
    glutInitWindowPosition(50, 50);
    glutCreateWindow("Robut");
 

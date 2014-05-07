@@ -2,12 +2,21 @@
 #include "robot.h"
 #include <cmath>
 #include <iostream>
+#include <GL/glut.h>
+#include <GL/glu.h>
+#include <GL/gl.h>
 
 #define EPS 0.00001
 
 class robot;
 
 avoidance::avoidance() {}
+
+///////////////////////////
+
+avoidance::~avoidance(void) {}
+
+//////////////////////////////////////
 
 int avoidance::action(robot *rob) {
 
@@ -17,18 +26,34 @@ int avoidance::action(robot *rob) {
 
    eigenvectors(&v1[0], &v2[0]);
 
-std::cout << v1[0] << ", " << v1[1] << std::endl;
+glLineWidth(2.5);
+glColor3f(0.0, 1.0, 0.0);
+glBegin(GL_LINES);
+glVertex3f(0.0, 0.0, 0.0);
+if (v1[0] < 0.0 ) {
+   glVertex3f(v1[1], -v1[0], 0.0);
+   std::cout << v1[0] << ", " << v1[1] << " - case" << std::endl;
+} else {
+   glVertex3f(-v1[1], v1[0], 0.0);
+   std::cout << v1[0] << ", " << v1[1] << " + case" << std::endl;
+}
+
+/*
+   the robot's x = visual's y
+   the robot's y = visual's -x
+ */
+
+glEnd();
+
    //rob->setdir(atan2f(v1[1],v1[0]));
 
    return 0;
 
 }
 
-//////////////////////////////////////
-
-avoidance::~avoidance(void) {}
-
-//////////////////////////////////////
+/*
+ * eigenvectors from a 2x2 matrix
+ */
 
 int avoidance::eigenvectors(float *v1, float *v2) {
 
@@ -79,12 +104,12 @@ int avoidance::eigenvectors(float *v1, float *v2) {
 
    float len;
 
-   if (a21 > EPS) {
+   if (a21 > EPS || a21 < -EPS) {
       v1[1] = 1.0;
       v1[0] = (lmbda1 - a22) / a21;
       v2[1] = 1.0;
       v2[0] = (lmbda2 - a22) / a21;
-   } else if (a12 > EPS) {
+   } else if (a12 > EPS || a12 < -EPS) {
       v1[0] = 1.0;
       v1[1] = (lmbda1 - a11) / a12;
       v2[0] = 1.0;
@@ -100,6 +125,23 @@ int avoidance::eigenvectors(float *v1, float *v2) {
 
    v1[0] /= len;
    v1[1] /= len;
+
+   len = sqrtf(v2[0] * v2[0] + v2[1] * v2[1]);
+
+   v2[0] /= len;
+   v2[1] /= len;
+
+   float tmp;
+
+   if (lmbda2 > lmbda1) {
+      tmp = v1[0];
+      v1[0] = v2[0];
+      v2[0] = tmp;
+
+      tmp = v1[1];
+      v1[1] = v2[1];
+      v2[1] = tmp;
+   }
 
    return 0;
 }
