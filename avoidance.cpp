@@ -20,12 +20,11 @@ avoidance::~avoidance(void) {}
 
 int avoidance::action(robot *rob) {
 
-   float v1[2], v2[2];
-
    N_dist = rob->getmap(&dist[0], &angle[0]);
 
    eigenvectors(&v1[0], &v2[0]);
 
+#if 0
 glLineWidth(2.5);
 glColor3f(0.0, 1.0, 0.0);
 glBegin(GL_LINES);
@@ -42,10 +41,15 @@ if (v1[0] < 0.0 ) {
    the robot's x = visual's y
    the robot's y = visual's -x
  */
-
 glEnd();
+#endif
+
 
    //rob->setdir(atan2f(v1[1],v1[0]));
+
+   robdir = rob->getdir();
+   robx   = rob->getposx();
+   roby   = rob->getposy();
 
    return 0;
 
@@ -144,4 +148,42 @@ int avoidance::eigenvectors(float *v1, float *v2) {
    }
 
    return 0;
+}
+
+int avoidance::drawdirection(float relx, float rely, float reldir) {
+
+  glLineWidth(2.5);
+  glColor3f(0.0, 1.0, 0.0);
+  glBegin(GL_LINES);
+  glVertex3f(-roby + rely, robx - relx, 0.0);
+
+  float xpos, ypos;
+  float tmp;
+
+  if (v1[0] < 0.0 ) {
+     xpos = -v1[0];
+     ypos = -v1[1];
+  } else {
+     xpos = v1[0];
+     ypos = v1[1];
+  }
+
+  // transform to the visual window
+
+  tmp = -ypos;
+  ypos = xpos;
+  xpos = tmp;
+
+  tmp  = xpos*cosf(robdir - reldir) - ypos*sinf(robdir - reldir);
+  ypos = xpos*sinf(robdir - reldir) + ypos*cosf(robdir - reldir);
+  xpos = tmp;
+
+  xpos += rely - roby;
+  ypos += -relx + robx;
+
+  glVertex3f(xpos, ypos, 0.0);
+
+  glEnd();
+
+  return 0;
 }

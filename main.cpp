@@ -41,9 +41,6 @@ void idle(void) {
       rob[i].getlocalmap(MAP);
    }
 
-   if (mode == AUT)
-      avi.action(jub);
-
    if (mode == FREE) {
       reldir = 0.0;
       relx   = 0.0;
@@ -81,9 +78,10 @@ void move(void){
       rob[i].drawpath(relx, rely, reldir - 0.5*PI);
       rob[i].drawrobot(relx, rely, reldir - 0.5*PI);
       rob[i].drawlocalmap(relx, rely, reldir - 0.5*PI);
+      avi.action(&rob[i]);
+      avi.drawdirection(relx, rely, reldir);
    }
 
-avi.action(jub);
    glFlush();
 }
 
@@ -160,7 +158,7 @@ int main(int argc, char** argv){
 
    glutInit(&argc, argv);
    glutInitDisplayMode(GLUT_RGB|GLUT_SINGLE);
-   glutInitWindowSize(400, 400);
+   glutInitWindowSize(600, 600);
    glutInitWindowPosition(50, 50);
    glutCreateWindow("Robut");
 

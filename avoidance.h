@@ -12,8 +12,12 @@ class avoidance {
       ~avoidance();
 
       int action(robot*);
+      int drawdirection(float relx, float rely, float reldir);
 
    private:
+
+      float v1[2], v2[2]; // eigenvectors
+      float robdir, robx, roby;
 
       int N_dist;
       float dist[200], angle[200]; // the distance and angle arrays of the robot
