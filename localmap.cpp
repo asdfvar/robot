@@ -10,8 +10,6 @@
 class robot;
 class map;
 
-#define PI 3.1415926535
-
 int robot::getlocalmap(map* MAP) {
 
    int i;

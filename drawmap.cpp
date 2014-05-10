@@ -13,7 +13,6 @@
 #include "constants.h"
 
 #define CIRCRES 80
-#define PI 3.1415926
 
 int map::draw(float relx, float rely, float reldir){
 

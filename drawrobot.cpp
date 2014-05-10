@@ -10,7 +10,6 @@
 #include <GL/gl.h>
 #include "constants.h"
 
-#define PI 3.1415926535
 #define ABS(A) (A > 0.0 ? A : -A)
 
 /*******************
