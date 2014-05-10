@@ -8,7 +8,7 @@ class map;
 #define MINSPEED 0.01 // m/s
 #define n_dist 200
 
-enum {FREE=0, CNTR, CNTRFIX, AUT};
+enum {FREE=0, CNTR, CNTRFIX};
 
 class robot{
    public:

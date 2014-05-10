@@ -6,11 +6,13 @@
 #include <stdlib.h>
 #include "robot.h"
 #include "map.h"
-#include <math.h>
+#include <cmath>
 #include <time.h>
 #include "avoidance.h"
 
 #define PI 3.1415926
+
+enum {MAN, AUT};
 
 float gettime(void);
 
@@ -19,7 +21,9 @@ map *MAP = new map();
 robot rob[1];
 robot *jub = &rob[0];
 int irob = 0;
-int mode = 1;
+int view_mode = 1;
+int control_mode = MAN;
+
 
 float relx=0.0, rely=0.0, reldir=0.0;
 
@@ -41,15 +45,15 @@ void idle(void) {
       rob[i].getlocalmap(MAP);
    }
 
-   if (mode == FREE) {
+   if (view_mode == FREE) {
       reldir = 0.0;
       relx   = 0.0;
       rely   = 0.0;
-   } else if (mode == CNTRFIX) {
+   } else if (view_mode == CNTRFIX) {
       reldir = jub->getdir();
       relx   = jub->getposx();
       rely   = jub->getposy();
-   } else if (mode == CNTR) {
+   } else if (view_mode == CNTR) {
       reldir = 0.0;
       relx   = jub->getposx();
       rely   = jub->getposy();
@@ -78,8 +82,11 @@ void move(void){
       rob[i].drawpath(relx, rely, reldir - 0.5*PI);
       rob[i].drawrobot(relx, rely, reldir - 0.5*PI);
       rob[i].drawlocalmap(relx, rely, reldir - 0.5*PI);
-      avi.action(&rob[i]);
-      avi.drawdirection(relx, rely, reldir);
+
+      if (control_mode == AUT) {
+         avi.action(&rob[i]);
+         avi.drawdirection(relx, rely, reldir);
+      }
    }
 
    glFlush();
@@ -100,11 +107,11 @@ void keyboardDown(unsigned char key, int x, int y){
       exit(1);
    }
    else if (key == 'C')
-      mode = CNTRFIX;
+      view_mode = CNTRFIX;
    else if (key == 'c')
-      mode = CNTR;
+      view_mode = CNTR;
    else if (key == 'g')
-      mode = FREE;
+      view_mode = FREE;
    else if (key == '0')
       jub->setposxy(0.0, 0.0, 0.0);
    else if (key == 't')
@@ -113,8 +120,12 @@ void keyboardDown(unsigned char key, int x, int y){
       --irob;
       if (irob < 0) {irob += N_robots;}
       jub = &rob[irob % N_robots];
-   } else if (key == 'A')
-      mode = AUT;
+   } 
+
+   if (key == 'A')
+      control_mode = AUT;
+   else if (key == 'M')
+      control_mode = MAN;
 
 }
 
