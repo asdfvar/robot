@@ -10,7 +10,7 @@
 
 class robot;
 
-avoidance::avoidance() {}
+avoidance::avoidance(void) {}
 
 ///////////////////////////
 
@@ -18,38 +18,19 @@ avoidance::~avoidance(void) {}
 
 //////////////////////////////////////
 
-int avoidance::action(robot *rob) {
+int avoidance::load(robot *rob) {
 
+#if 0
    N_dist = rob->getmap(&dist[0], &angle[0]);
 
    eigenvectors(&v1[0], &v2[0]);
-
-#if 0
-glLineWidth(2.5);
-glColor3f(0.0, 1.0, 0.0);
-glBegin(GL_LINES);
-glVertex3f(0.0, 0.0, 0.0);
-if (v1[0] < 0.0 ) {
-   glVertex3f(v1[1], -v1[0], 0.0);
-   std::cout << v1[0] << ", " << v1[1] << " - case" << std::endl;
-} else {
-   glVertex3f(-v1[1], v1[0], 0.0);
-   std::cout << v1[0] << ", " << v1[1] << " + case" << std::endl;
-}
-
-/*
-   the robot's x = visual's y
-   the robot's y = visual's -x
- */
-glEnd();
-#endif
-
 
    //rob->setdir(atan2f(v1[1],v1[0]));
 
    robdir = rob->getdir();
    robx   = rob->getposx();
    roby   = rob->getposy();
+#endif
 
    return 0;
 
@@ -59,14 +40,14 @@ glEnd();
  * eigenvectors from a 2x2 matrix
  */
 
-int avoidance::eigenvectors(float *v1, float *v2) {
+int avoidance::eigenvectors(float *v1, float *v2, float *dist, float *angle, int N_dist) {
 
    float lmbda1, lmbda2;
    float a11, a12, a21, a22;
 
    a11 = a12 = a21 = a22 = 0.0;
 
-   float x[200], y[200];
+   float x[240], y[240];
 
   /*******************************
    * Populate the x and y arrays *

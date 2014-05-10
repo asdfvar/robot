@@ -84,7 +84,7 @@ void move(void){
       rob[i].drawlocalmap(relx, rely, reldir - 0.5*PI);
 
       if (control_mode == AUT) {
-         avi.action(&rob[i]);
+         avi.load(&rob[i]);
          avi.drawdirection(relx, rely, reldir);
       }
    }

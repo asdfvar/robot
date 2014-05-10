@@ -1,5 +1,6 @@
 #include "robot.h"
 
+#if 0
 robot::robot(float position_x, float position_y, float direction){
    posx  = position_x;
    posy  = position_y;
@@ -14,6 +15,7 @@ robot::robot(float position_x, float position_y, float direction){
    tturn = 0.0;
    N_dist = n_dist;
 }
+#endif
 
 robot::robot(){
    posx  = 0.0f;

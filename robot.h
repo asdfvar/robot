@@ -2,7 +2,9 @@
 #define _ROBOT_H_
 
 #include "map.h"
+#include "avoidance.h"
 class map;
+class avoidance;
 
 #define MINOMEGA 0.01 // rad/s
 #define MINSPEED 0.01 // m/s
@@ -17,8 +19,8 @@ class robot{
       * Constructors *
       ****************/
 
-      robot(float posx, float posy, float dir);
       robot();
+      robot(float posx, float posy, float dir);
       ~robot();
 
      /*************
@@ -45,6 +47,8 @@ class robot{
       int move(unsigned char key);
       int unmove(unsigned char key);
       int collide(map *MAP);
+
+      int autonomous(void);
 
    private:
 
@@ -74,8 +78,8 @@ class robot{
 
       /*********/
 
-      bool collision;   // collision
-      
+      bool collision;     // collision
+
 };
 
 #endif
