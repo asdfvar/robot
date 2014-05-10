@@ -5,6 +5,7 @@
 #include <GL/glut.h>
 #include <GL/glu.h>
 #include <GL/gl.h>
+#include "constants.h"
 
 #define EPS 0.00001
 
@@ -17,24 +18,6 @@ avoidance::avoidance(void) {}
 avoidance::~avoidance(void) {}
 
 //////////////////////////////////////
-
-int avoidance::load(robot *rob) {
-
-#if 0
-   N_dist = rob->getmap(&dist[0], &angle[0]);
-
-   eigenvectors(&v1[0], &v2[0]);
-
-   //rob->setdir(atan2f(v1[1],v1[0]));
-
-   robdir = rob->getdir();
-   robx   = rob->getposx();
-   roby   = rob->getposy();
-#endif
-
-   return 0;
-
-}
 
 /*
  * eigenvectors from a 2x2 matrix
@@ -131,29 +114,22 @@ int avoidance::eigenvectors(float *v1, float *v2, float *dist, float *angle, int
    return 0;
 }
 
-int avoidance::drawdirection(float relx, float rely, float reldir) {
+int avoidance::drawdirection(float v1[], float v2[],
+                             float relx, float rely, float reldir,
+                             float robx, float roby, float robdir) {
 
   glLineWidth(2.5);
   glColor3f(0.0, 1.0, 0.0);
   glBegin(GL_LINES);
-  glVertex3f(-roby + rely, robx - relx, 0.0);
+  glVertex3f((-roby + rely)*CONV, (robx - relx)*CONV, 0.0);
 
   float xpos, ypos;
   float tmp;
 
-  if (v1[0] < 0.0 ) {
-     xpos = -v1[0];
-     ypos = -v1[1];
-  } else {
-     xpos = v1[0];
-     ypos = v1[1];
-  }
+  xpos = v1[0];
+  ypos = v1[1];
 
   // transform to the visual window
-
-  tmp = -ypos;
-  ypos = xpos;
-  xpos = tmp;
 
   tmp  = xpos*cosf(robdir - reldir) - ypos*sinf(robdir - reldir);
   ypos = xpos*sinf(robdir - reldir) + ypos*cosf(robdir - reldir);
@@ -162,7 +138,7 @@ int avoidance::drawdirection(float relx, float rely, float reldir) {
   xpos += rely - roby;
   ypos += -relx + robx;
 
-  glVertex3f(xpos, ypos, 0.0);
+  glVertex3f(xpos*CONV, ypos*CONV, 0.0);
 
   glEnd();
 

@@ -11,19 +11,15 @@ class avoidance {
       avoidance();
       ~avoidance();
 
-      int load(robot*);
-      int drawdirection(float relx, float rely, float reldir);
+      int drawdirection(float v1[], float v2[],
+                        float relx, float rely, float reldir,
+                        float robx, float roby, float robdir);
 
       int eigenvectors(float *v1, float *v2, float *dist, float *angle, int N);
    private:
 
       float v1[2], v2[2]; // eigenvectors
       float robdir, robx, roby;
-
-#if 0
-      int N_dist;
-      float dist[200], angle[200]; // the distance and angle arrays of the robot
-#endif
 
 
 };

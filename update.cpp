@@ -7,6 +7,7 @@
 #include <math.h>
 #include <stdlib.h>
 #include <iostream>
+#include <stdio.h>
 #include "constants.h"
 
 #define SPEED 1.0 // default 1 m/s
@@ -17,7 +18,7 @@
 
 #define ABS(A) (A > 0.0 ? A : -A)
 
-enum {DEF = 0, MOV, AUTO};
+enum {DEF = 0, MOV};
 
 /*********************************
  * update the robot based on its
@@ -65,9 +66,11 @@ int robot::update(float dt){
 
 int robot::move(unsigned char key){
 
+printf("mode=%d\n",mode);
    if (mode == DEF){
       switch (key){
          case 'w':
+printf("forward\n");
             speed = SPEED;
             break;
          case 'a':
@@ -109,7 +112,9 @@ int robot::move(unsigned char key){
          omega = 0.0;
          break;
       case 'A':
-         mode = AUTO;
+         speed = 0.0;
+         omega = 0.0;
+      case 'M':
          speed = 0.0;
          omega = 0.0;
       default:

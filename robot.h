@@ -43,6 +43,7 @@ class robot{
       int drawrobot(float relx, float rely, float reldir);
       int drawlocalmap(float relx, float rely, float reldir);
       int getmap(float *distances, float *directions);
+      int drawautonomous(float relx, float rely, float reldir);
 
       int move(unsigned char key);
       int unmove(unsigned char key);
@@ -62,6 +63,8 @@ class robot{
       float speed;  // speed
       float omega;  // rotation rate (radians/second)
 
+      float alpha, rho; // rotation rate and speed control parameters
+
       float diameter; // robot diameter
 
       int N_dist;
@@ -78,6 +81,7 @@ class robot{
 
       /*********/
 
+      float v1[2], v2[2]; // eigenvectors of the covariance matrix
       bool collision;     // collision
 
 };

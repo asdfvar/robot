@@ -9,16 +9,17 @@
 #include <cmath>
 #include <time.h>
 #include "avoidance.h"
+#include "constants.h"
 
-#define PI 3.1415926
+//#define DEBUG
 
 enum {MAN, AUT};
 
 float gettime(void);
 
-int N_robots=1;
+#define N_robots 4
 map *MAP = new map();
-robot rob[1];
+robot rob[N_robots];
 robot *jub = &rob[0];
 int irob = 0;
 int view_mode = 1;
@@ -26,8 +27,6 @@ int control_mode = MAN;
 
 
 float relx=0.0, rely=0.0, reldir=0.0;
-
-avoidance avi;
 
 /********
  * idle *
@@ -38,7 +37,15 @@ void idle(void) {
    int i;
    float dt;
 
+
+   if (control_mode == AUT) {
+     for (i = 0; i < N_robots; i++) {
+       rob[i].autonomous();
+     }
+   }
+
    dt = gettime();
+
    for (i=0; i<N_robots; i++) {
       rob[i].update(dt);
       rob[i].collide(MAP);
@@ -79,14 +86,15 @@ void move(void){
    MAP->draw(relx, rely, reldir - 0.5*PI);
 
    for (i=0; i<N_robots; i++) {
-      rob[i].drawpath(relx, rely, reldir - 0.5*PI);
       rob[i].drawrobot(relx, rely, reldir - 0.5*PI);
+
+      #ifdef DEBUG
+      rob[i].drawpath(relx, rely, reldir - 0.5*PI);
       rob[i].drawlocalmap(relx, rely, reldir - 0.5*PI);
 
-      if (control_mode == AUT) {
-         avi.load(&rob[i]);
-         avi.drawdirection(relx, rely, reldir);
-      }
+      if (control_mode == AUT)
+         rob[i].drawautonomous(relx, rely, reldir - 0.5*PI);
+      #endif
    }
 
    glFlush();
@@ -98,6 +106,7 @@ void move(void){
 
 void keyboardDown(unsigned char key, int x, int y){
 
+printf("moving %p key=%c\n",jub,key);
    jub->move(key);
 
    // quit
