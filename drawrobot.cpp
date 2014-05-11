@@ -178,8 +178,8 @@ int robot::drawrobot(float relx, float rely, float reldir) {
 
       // rotate circle to its relative direction
 
-      tmp = -y;
-      y = x;
+      tmp = x*sinf(reldir + 0.5*PI) - y*cosf(reldir + 0.5*PI);
+      y = x*cosf(reldir + 0.5*PI) + y*sinf(reldir + 0.5*PI);
       x = tmp;
 
       glVertex3f(x, y, 0.0);
