@@ -122,10 +122,9 @@ int avoidance::drawdirection(float v1[], float v2[],
   glColor3f(0.0, 1.0, 0.0);
   glBegin(GL_LINES);
 
-  float xpos, ypos;
-  float pointdir;
-
   // draw the base of the arrow
+
+  float xpos, ypos;
 
   xpos = robx - relx;
   ypos = roby - rely;
@@ -133,12 +132,17 @@ int avoidance::drawdirection(float v1[], float v2[],
 
   // define the pointing direction
 
+  float pointdir;
+
   pointdir = reldir - robdir;
+
+  float cospointdir = cosf(pointdir);
+  float sinpointdir = sinf(pointdir);
 
   // rotate the pointing direction to the maps perspective
 
-  xpos += v1[0]*cosf(pointdir) + v1[1]*sinf(pointdir);
-  ypos += -v1[0]*sinf(pointdir) + v1[1]*cosf(pointdir);
+  xpos += 0.2*( v1[0]*cospointdir + v1[1]*sinpointdir);
+  ypos += 0.2*(-v1[0]*sinpointdir + v1[1]*cospointdir);
 
   // transform to the visual window
 

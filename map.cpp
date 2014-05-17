@@ -48,7 +48,7 @@ map::~map(){
 float map::getdist(float x, float y) {
 
    int i;
-   float dist, mindist;
+   float dist, mindist = 0.0;
    float Dp1, Dp2, Dp1p2;
    bool initdone=false;
 

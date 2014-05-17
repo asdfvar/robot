@@ -35,13 +35,15 @@ int robot::drawlocalmap(float relx, float rely, float reldir) {
    y = -x*sinf(reldir) + y*cosf(reldir);
    x = tmp;
 
+   float deltadir = dir - reldir;
+
    glLineWidth(2.5);
    glColor3f(1.0, 0.0, 0.0);
    for (i = 0; i < N_dist; i++) {
       glBegin(GL_LINES);
       glVertex3f(x*CONV, y*CONV, 0.0);
-      glVertex3f(x*CONV + dist[i]*cosf(angle[i] + dir - reldir)*CONV,
-                 y*CONV + dist[i]*sinf(angle[i] + dir - reldir)*CONV,
+      glVertex3f(x*CONV + dist[i]*cosf(angle[i] + deltadir)*CONV,
+                 y*CONV + dist[i]*sinf(angle[i] + deltadir)*CONV,
                  0.0);
       glEnd();
    }

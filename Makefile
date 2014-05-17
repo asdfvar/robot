@@ -1,5 +1,5 @@
 CC = g++
-FLAGS = -Wall
+FLAGS = -Wall -O3
 LINK = -lm -lglut
 
 OBJ = main.o robot.o update.o map.o \

@@ -75,12 +75,15 @@ int robot::drawpath(float relx, float rely, float reldir){
 
    // rotate the path to the robot direction
 
+   float cosdirp = cosf(dirp);
+   float sindirp = sinf(dirp);
+
    for (i = 0; i < N; i++){
-      tmp = arcx1[i]*cosf(dirp) - arcy1[i]*sinf(dirp);
-      arcy1[i] = arcx1[i]*sinf(dirp) + arcy1[i]*cosf(dirp);
+      tmp = arcx1[i]*cosdirp - arcy1[i]*sindirp;
+      arcy1[i] = arcx1[i]*sindirp + arcy1[i]*cosdirp;
       arcx1[i] = tmp;
-      tmp = arcx2[i]*cosf(dirp) - arcy2[i]*sinf(dirp);
-      arcy2[i] = arcx2[i]*sinf(dirp) + arcy2[i]*cosf(dirp);
+      tmp = arcx2[i]*cosdirp - arcy2[i]*sindirp;
+      arcy2[i] = arcx2[i]*sindirp + arcy2[i]*cosdirp;
       arcx2[i] = tmp;
    }
 
@@ -89,17 +92,17 @@ int robot::drawpath(float relx, float rely, float reldir){
    if (!is_strait){
       if ((omega > 0.0 && speed > 0.0) || (omega < 0.0 && speed < 0.0)){
          for (i = 0; i < N; i++){
-            arcx1[i] -= radius*cosf(dirp)*CONV;
-            arcx2[i] -= radius*cosf(dirp)*CONV;
-            arcy1[i] -= radius*sinf(dirp)*CONV;
-            arcy2[i] -= radius*sinf(dirp)*CONV;
+            arcx1[i] -= radius*cosdirp*CONV;
+            arcx2[i] -= radius*cosdirp*CONV;
+            arcy1[i] -= radius*sindirp*CONV;
+            arcy2[i] -= radius*sindirp*CONV;
          }
       } else if ((omega < 0.0 && speed > 0.0) || (omega > 0.0 && speed < 0.0)) {
          for (i = 0; i < N; i++){
-            arcx1[i] += radius*cosf(dirp)*CONV;
-            arcx2[i] += radius*cosf(dirp)*CONV;
-            arcy1[i] += radius*sinf(dirp)*CONV;
-            arcy2[i] += radius*sinf(dirp)*CONV;
+            arcx1[i] += radius*cosdirp*CONV;
+            arcx2[i] += radius*cosdirp*CONV;
+            arcy1[i] += radius*sindirp*CONV;
+            arcy2[i] += radius*sindirp*CONV;
          }
       }
    }
