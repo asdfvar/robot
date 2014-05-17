@@ -11,7 +11,7 @@
 #include "avoidance.h"
 #include "constants.h"
 
-//#define DEBUG
+#define DEBUG
 
 enum {MAN, AUT};
 
@@ -53,7 +53,7 @@ void idle(void) {
    }
 
    if (view_mode == FREE) {
-      reldir = 0.5*PI;
+      reldir = 0.0;
       relx   = 0.0;
       rely   = 0.0;
    } else if (view_mode == CNTRFIX) {
@@ -61,11 +61,11 @@ void idle(void) {
       relx   = jub->getposx();
       rely   = jub->getposy();
    } else if (view_mode == CNTR) {
-      reldir = 0.5*PI;
+      reldir = 0.0;
       relx   = jub->getposx();
       rely   = jub->getposy();
    } else {
-      reldir = 0.5*PI;
+      reldir = 0.0;
       relx   = 0.0;
       rely   = 0.0;
    }
@@ -159,7 +159,7 @@ void keyboardUp(unsigned char key, int x, int y){
 int main(int argc, char** argv){
 
    float x1[6],x2[6],y1[6],y2[6];
-   float cx[3],cy[3],rad[3];
+   float cx[1],cy[1],rad[1];
 
    x1[0] = 0.5; x1[1] = 0.5; x1[2] = -1.0;
    y1[0] = 0.5; y1[1] = 0.5; y1[2] = -1.0;
@@ -171,13 +171,13 @@ int main(int argc, char** argv){
    x2[3] = 1.0; x2[4] = 1.0; x2[5] = 1.0;
    y2[3] = 1.0; y2[4] = -1.0; y2[5] = -1.0;
 
-   MAP->loadlines(&x1[0], &y1[0], &x2[0], &y2[0], 6);
+   MAP->loadlines(x1, y1, x2, y2, 6);
 
-   cx[0] = -0.5; cx[1] = -0.5;
-   cy[0] = 0.5; cy[1] = -0.5;
-   rad[0] = 0.1; rad[1] = 0.2;
+   cx[0] = -1.0;
+   cy[0] = -1.0;
+   rad[0] = 0.4;
 
-   MAP->loadcircles(&cx[0], &cy[0], &rad[0], 3);
+   MAP->loadcircles(cx, cy, rad, 1);
 
    rob[0].setposxy(0.0, 0.0, 0.0);
 

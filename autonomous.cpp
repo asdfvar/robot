@@ -15,14 +15,11 @@ int robot::autonomous(void) {
 
   avi.eigenvectors(v1, v2, dist, angle, N_dist);
 
-  // fix the direction 0 <= dir <= pi
+  // fix the direction -pi/2 <= dir <= pi/2
 
   if (v1[0] < 0.0 ) {
      v1[0] = -v1[0];
      v1[1] = -v1[1];
-  } else {
-     v1[0] = v1[0];
-     v1[1] = v1[1];
   }
 
   speed = rho;
