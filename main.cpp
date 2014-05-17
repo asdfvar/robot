@@ -53,19 +53,19 @@ void idle(void) {
    }
 
    if (view_mode == FREE) {
-      reldir = 0.0;
+      reldir = 0.5*PI;
       relx   = 0.0;
       rely   = 0.0;
    } else if (view_mode == CNTRFIX) {
-      reldir = jub->getdir();
+      reldir = jub->getdir() - 0.5*PI;
       relx   = jub->getposx();
       rely   = jub->getposy();
    } else if (view_mode == CNTR) {
-      reldir = 0.0;
+      reldir = 0.5*PI;
       relx   = jub->getposx();
       rely   = jub->getposy();
    } else {
-      reldir = 0.0;
+      reldir = 0.5*PI;
       relx   = 0.0;
       rely   = 0.0;
    }
@@ -83,17 +83,17 @@ void move(void){
 
    glClear(GL_COLOR_BUFFER_BIT);
 
-   MAP->draw(relx, rely, reldir - 0.5*PI);
+   MAP->draw(relx, rely, reldir);
 
    for (i=0; i<N_robots; i++) {
-      rob[i].drawrobot(relx, rely, reldir - 0.5*PI);
+      rob[i].drawrobot(relx, rely, reldir);
 
       #ifdef DEBUG
-      rob[i].drawpath(relx, rely, reldir - 0.5*PI);
-      rob[i].drawlocalmap(relx, rely, reldir - 0.5*PI);
+      rob[i].drawpath(relx, rely, reldir);
+      rob[i].drawlocalmap(relx, rely, reldir);
 
       if (control_mode == AUT)
-         rob[i].drawautonomous(relx, rely, reldir - 0.5*PI);
+         rob[i].drawautonomous(relx, rely, reldir);
       #endif
    }
 
@@ -158,19 +158,24 @@ void keyboardUp(unsigned char key, int x, int y){
 
 int main(int argc, char** argv){
 
-   float x1[4],x2[4],y1[4],y2[4];
+   float x1[6],x2[6],y1[6],y2[6];
    float cx[3],cy[3],rad[3];
 
-   x1[0] = 0.5; x1[1] = -0.5;
-   y1[0] = 0.5; y1[1] = -0.5;
-   x2[0] = 0.5; x2[1] = 0.0;
-   y2[0] = -0.5; y2[1] = 1.0;
+   x1[0] = 0.5; x1[1] = 0.5; x1[2] = -1.0;
+   y1[0] = 0.5; y1[1] = 0.5; y1[2] = -1.0;
+   x2[0] = -0.5; x2[1] = 0.5; x2[2] = -1.0;
+   y2[0] = 0.5; y2[1] = -0.5; y2[2] = 1.0;
 
-   MAP->loadlines(&x1[0], &y1[0], &x2[0], &y2[0], 2);
+   x1[3] = -1.0; x1[4] = 1.0; x1[5] = -1.0;
+   y1[3] = 1.0; y1[4] = 1.0; y1[5] = -1.0;
+   x2[3] = 1.0; x2[4] = 1.0; x2[5] = 1.0;
+   y2[3] = 1.0; y2[4] = -1.0; y2[5] = -1.0;
 
-   cx[0] = -0.5; cx[1] = 0.5; cx[2] = -0.5;
-   cy[0] = 0.0; cy[1] = 0.5; cy[2] = 0.5;;
-   rad[0] = 0.2; rad[1] = 0.1; rad[2] = 0.3;
+   MAP->loadlines(&x1[0], &y1[0], &x2[0], &y2[0], 6);
+
+   cx[0] = -0.5; cx[1] = -0.5;
+   cy[0] = 0.5; cy[1] = -0.5;
+   rad[0] = 0.1; rad[1] = 0.2;
 
    MAP->loadcircles(&cx[0], &cy[0], &rad[0], 3);
 

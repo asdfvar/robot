@@ -13,7 +13,7 @@ robot::robot(float position_x, float position_y, float direction){
    mmove = 0.0;
    tturn = 0.0;
    N_dist = n_dist;
-   alpha = 1.0;
+   alpha = 0.6;
    rho = 0.5*alpha;
 }
 
@@ -30,7 +30,7 @@ robot::robot(){
    mmove = 0.0;
    tturn = 0.0;
    N_dist = n_dist;
-   alpha = 1.0;
+   alpha = 0.6;
    rho = 0.5*alpha;
 }
 
