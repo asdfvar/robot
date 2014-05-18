@@ -12,6 +12,7 @@
 #include "constants.h"
 
 #define DEBUG
+bool dbg = false;
 
 enum {MAN, AUT};
 
@@ -88,13 +89,15 @@ void move(void){
    for (i=0; i<N_robots; i++) {
       rob[i].drawrobot(relx, rely, reldir);
 
+if (dbg){
       #ifdef DEBUG
-      rob[i].drawpath(relx, rely, reldir);
       rob[i].drawlocalmap(relx, rely, reldir);
+      rob[i].drawpath(relx, rely, reldir);
 
       if (control_mode == AUT)
          rob[i].drawautonomous(relx, rely, reldir);
       #endif
+}
    }
 
    glFlush();
@@ -129,7 +132,8 @@ printf("moving %p key=%c\n",jub,key);
       --irob;
       if (irob < 0) {irob += N_robots;}
       jub = &rob[irob % N_robots];
-   } 
+   } else if (key == 'o')
+      dbg = true;
 
    if (key == 'A')
       control_mode = AUT;
