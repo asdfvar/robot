@@ -133,7 +133,7 @@ printf("moving %p key=%c\n",jub,key);
       if (irob < 0) {irob += N_robots;}
       jub = &rob[irob % N_robots];
    } else if (key == 'o')
-      dbg = true;
+      dbg = 1 - dbg;
 
    if (key == 'A')
       control_mode = AUT;
