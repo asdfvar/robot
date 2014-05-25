@@ -1,6 +1,6 @@
 CC = g++
 FLAGS = -Wall -O3
-LINK = -lm -lglut
+LINK = -lm -lGL -lGLU -lglut
 
 OBJ = main.o robot.o update.o map.o \
       drawmap.o drawrobot.o loadmap.o \
@@ -13,7 +13,7 @@ TRASH = robot.h.gch constants.h.gch
 
 all: $(EXE)
 $(EXE): $(OBJ)
-	$(CC) $(FLAGS) $(OBJ) $(LINK) -o $(EXE)
+	$(CC) $(FLAGS) $(OBJ) -o $(EXE) $(LINK)
 
 main.o: main.cpp robot.h
 	$(CC) $(FLAGS) main.cpp -c
