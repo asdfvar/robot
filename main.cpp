@@ -147,13 +147,43 @@ printf("moving %p key=%c\n",jub,key);
  * keyboard Up *
  ***************/
 
-void keyboardUp(unsigned char key, int x, int y){
+void keyboardUp(unsigned char key, int x, int y) {
 
    int i;
 
    for (i=0; i<N_robots; i++) {
       jub->unmove(key);
    }
+}
+
+void mouseclick(int button, int state, int x, int y) {
+
+/*
+ *    button
+ * GLUT_LEFT_BUTTON
+ * GLUT_MIDDLE_BUTTON
+ * GLUT_RIGHT_BUTTON
+ *    state
+ * GLUT_UP
+ * GLUT_DOWN
+ */
+
+  std::cout << button << std::endl;
+  std::cout << state << std::endl;
+  std::cout << x << " " << y << std::endl;
+
+}
+
+void mouseMotion(int x, int y) {
+
+  std::cout << "Motion " << x << " " << y << std::endl;
+
+}
+
+void mousePassive(int x, int y) {
+
+  std::cout << "Passive " << x << " " << y << std::endl;
+
 }
 
 /********
@@ -194,6 +224,9 @@ int main(int argc, char** argv){
    glutDisplayFunc(move);
    glutKeyboardUpFunc(keyboardUp);
    glutKeyboardFunc(keyboardDown);
+   glutMouseFunc(mouseclick);
+   glutPassiveMotionFunc(mousePassive);
+   glutMotionFunc(mouseMotion);
    glutIdleFunc(idle);
 
    glutMainLoop();
