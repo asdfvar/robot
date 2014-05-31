@@ -28,6 +28,7 @@ int control_mode = MAN;
 
 
 float relx=0.0, rely=0.0, reldir=0.0;
+int windowsizex=600, windowsizey=600;
 
 /********
  * idle *
@@ -182,7 +183,21 @@ void mouseMotion(int x, int y) {
 
 void mousePassive(int x, int y) {
 
+#if 0
   std::cout << "Passive " << x << " " << y << std::endl;
+#endif
+
+  float xpos, ypos;
+
+  xpos = x - windowsizex/2 + 0.5;
+  xpos /= CONV;
+
+  ypos = windowsizex/2 - y + 0.5;
+  ypos /= CONV;
+
+  std::cout << "Passive " <<
+            xpos << " " <<
+            ypos << std::endl;
 
 }
 
@@ -217,7 +232,7 @@ int main(int argc, char** argv){
 
    glutInit(&argc, argv);
    glutInitDisplayMode(GLUT_RGB|GLUT_SINGLE);
-   glutInitWindowSize(600, 600);
+   glutInitWindowSize(windowsizex, windowsizey);
    glutInitWindowPosition(50, 50);
    glutCreateWindow("Robut");
 
