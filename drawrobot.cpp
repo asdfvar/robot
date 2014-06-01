@@ -18,6 +18,7 @@
 
 int robot::drawpath(float relx, float rely, float reldir){
 
+   extern float CONV;
    int i,N = 40;
    float arcx1[40], arcy1[40];
    float arcx2[40], arcy2[40];
@@ -156,6 +157,7 @@ return 0;
 
 int robot::drawrobot(float relx, float rely, float reldir) {
 
+   extern float CONV;
    int i;
    float x1,y1,x2,y2,x3,y3;
    float tmp;

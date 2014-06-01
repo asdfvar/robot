@@ -11,6 +11,8 @@
 #include "avoidance.h"
 #include "constants.h"
 
+float CONV = 1.0; // conversion from meters to screen units
+
 #define DEBUG
 bool dbg = false;
 
@@ -176,6 +178,7 @@ void mouseclick(int button, int state, int x, int y) {
  * GLUT_DOWN
  */
 
+  extern float CONV;
   float xpos, ypos;
 
   xpos = x - windowsizex/2 + 0.5;
@@ -192,6 +195,7 @@ void mouseclick(int button, int state, int x, int y) {
 
 void mouseMotion(int x, int y) {
 
+  extern float CONV;
   float xpos, ypos;
   float dx,dy;
 
@@ -218,6 +222,7 @@ void mouseMotion(int x, int y) {
 
 void mousePassive(int x, int y) {
 
+  extern float CONV;
   float xpos, ypos;
 
   xpos = x - windowsizex/2 + 0.5;
@@ -225,10 +230,6 @@ void mousePassive(int x, int y) {
 
   ypos = windowsizex/2 - y + 0.5;
   ypos /= windowsizey/2/CONV;
-
-  std::cout << "Passive " <<
-            xpos << " " <<
-            ypos << std::endl;
 
   xold = xpos;
   yold = ypos;

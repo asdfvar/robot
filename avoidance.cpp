@@ -118,6 +118,8 @@ int avoidance::drawdirection(float v1[], float v2[],
                              float relx, float rely, float reldir,
                              float robx, float roby, float robdir) {
 
+  extern float CONV;
+
   glLineWidth(2.5);
   glColor3f(0.0, 1.0, 0.0);
   glBegin(GL_LINES);

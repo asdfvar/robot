@@ -25,6 +25,7 @@ int robot::getlocalmap(map* MAP) {
 
 int robot::drawlocalmap(float relx, float rely, float reldir) {
 
+   extern float CONV;
    int i;
    float x,y,tmp;
 

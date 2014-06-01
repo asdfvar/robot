@@ -16,6 +16,7 @@
 
 int map::draw(float relx, float rely, float reldir){
 
+   extern float CONV;
    int i,k;
    float x,y,tmp;
 
