@@ -115,7 +115,8 @@ if (dbg){
 
 void keyboardDown(unsigned char key, int x, int y){
 
-printf("moving %p key=%c\n",jub,key);
+   extern float CONV;
+
    jub->move(key);
 
    // quit
@@ -145,6 +146,12 @@ printf("moving %p key=%c\n",jub,key);
       control_mode = AUT;
    else if (key == 'M')
       control_mode = MAN;
+
+   if (key == '-')
+      CONV -= 0.2;
+      if (CONV < 0.0) CONV = 0.0;
+   else if (key == '=')
+      CONV += 0.2;
 
 }
 
@@ -187,6 +194,13 @@ void mouseclick(int button, int state, int x, int y) {
   ypos = windowsizex/2 - y + 0.5;
   ypos /= windowsizey/2/CONV;
 
+  if (button == 3)
+     CONV += 0.05;
+  else if (button == 4) {
+     CONV -= 0.05;
+     if (CONV < 0.0) CONV = 0.0;
+  }
+
 }
 
 /****************
@@ -200,10 +214,10 @@ void mouseMotion(int x, int y) {
   float dx,dy;
 
   xpos = x - windowsizex/2 + 0.5;
-  xpos /= windowsizex/2/CONV;
+  xpos /= windowsizex/2;
 
   ypos = windowsizex/2 - y + 0.5;
-  ypos /= windowsizey/2/CONV;
+  ypos /= windowsizey/2;
 
   dx = xpos - xold;
   dy = ypos - yold;
@@ -211,8 +225,8 @@ void mouseMotion(int x, int y) {
   xold = xpos;
   yold = ypos;
 
-  xview -= dx;
-  yview -= dy;
+  xview -= dx/CONV;
+  yview -= dy/CONV;
 
 }
 
@@ -222,14 +236,13 @@ void mouseMotion(int x, int y) {
 
 void mousePassive(int x, int y) {
 
-  extern float CONV;
   float xpos, ypos;
 
   xpos = x - windowsizex/2 + 0.5;
-  xpos /= windowsizex/2/CONV;
+  xpos /= windowsizex/2;
 
   ypos = windowsizex/2 - y + 0.5;
-  ypos /= windowsizey/2/CONV;
+  ypos /= windowsizey/2;
 
   xold = xpos;
   yold = ypos;

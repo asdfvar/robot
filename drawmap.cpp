@@ -37,7 +37,7 @@ int map::draw(float relx, float rely, float reldir){
         y   = -x*sinf(reldir) + y*cosf(reldir);
         x = tmp;
 
-        glVertex3f(x, y, 0.0);
+        glVertex3f(x*CONV, y*CONV, 0.0);
 
         x = x2[i];
         y = y2[i];
@@ -48,7 +48,7 @@ int map::draw(float relx, float rely, float reldir){
         y   = -x*sinf(reldir) + y*cosf(reldir);
         x = tmp;
 
-        glVertex3f(x, y, 0.0);
+        glVertex3f(x*CONV, y*CONV, 0.0);
 
       glEnd();
    }
@@ -60,15 +60,15 @@ int map::draw(float relx, float rely, float reldir){
    for (i = 0; i < Ncircles; i++){
       glBegin(GL_POLYGON);
       for (k = 0; k < CIRCRES; k++){
-         x = (centerx[i] + radii[i]*cosf(2.0*PI*(float)k/(float)CIRCRES))*CONV;
-         y = (centery[i] + radii[i]*sinf(2.0*PI*(float)k/(float)CIRCRES))*CONV;
+         x = (centerx[i] + radii[i]*cosf(2.0*PI*(float)k/(float)CIRCRES));
+         y = (centery[i] + radii[i]*sinf(2.0*PI*(float)k/(float)CIRCRES));
 
          x -= relx; y -= rely;
          tmp = x*cosf(reldir) + y*sinf(reldir);
          y   = -x*sinf(reldir) + y*cosf(reldir);
          x = tmp;
 
-         glVertex3f(x, y, 0.0);
+         glVertex3f(x*CONV, y*CONV, 0.0);
       }
       glEnd();
    }

@@ -31,11 +31,10 @@ int robot::drawpath(float relx, float rely, float reldir){
 
    if (!is_strait){
       r1 = radius - diameter/2.0; r2 = radius + diameter/2.0;
-      r1 *= CONV; r2 *= CONV;
       thetalen = speed/radius;
       dth = (thetalen - 0.0)/((float)(N-1));
    } else {
-      dp = speed/(float)N * CONV;
+      dp = speed/(float)N;
    }
 
   /*****************************
@@ -51,8 +50,8 @@ int robot::drawpath(float relx, float rely, float reldir){
 
    if (is_strait){
       for (i = 0, p = 0.0; i < N; p += dp, i++){
-         arcx1[i] = -diameter/2.0 * CONV;
-         arcx2[i] = diameter/2.0 * CONV;
+         arcx1[i] = -diameter/2.0;
+         arcx2[i] = diameter/2.0;
          arcy1[i] = p;
          arcy2[i] = p;
       }
@@ -93,17 +92,17 @@ int robot::drawpath(float relx, float rely, float reldir){
    if (!is_strait){
       if ((omega > 0.0 && speed > 0.0) || (omega < 0.0 && speed < 0.0)){
          for (i = 0; i < N; i++){
-            arcx1[i] -= radius*cosdirp*CONV;
-            arcx2[i] -= radius*cosdirp*CONV;
-            arcy1[i] -= radius*sindirp*CONV;
-            arcy2[i] -= radius*sindirp*CONV;
+            arcx1[i] -= radius*cosdirp;
+            arcx2[i] -= radius*cosdirp;
+            arcy1[i] -= radius*sindirp;
+            arcy2[i] -= radius*sindirp;
          }
       } else if ((omega < 0.0 && speed > 0.0) || (omega > 0.0 && speed < 0.0)) {
          for (i = 0; i < N; i++){
-            arcx1[i] += radius*cosdirp*CONV;
-            arcx2[i] += radius*cosdirp*CONV;
-            arcy1[i] += radius*sindirp*CONV;
-            arcy2[i] += radius*sindirp*CONV;
+            arcx1[i] += radius*cosdirp;
+            arcx2[i] += radius*cosdirp;
+            arcy1[i] += radius*sindirp;
+            arcy2[i] += radius*sindirp;
          }
       }
    }
@@ -141,10 +140,10 @@ int robot::drawpath(float relx, float rely, float reldir){
    glColor3ub(255, 255, 255);
    for (i = 0; i < N-1; i++){
       glBegin(GL_POLYGON);
-      glVertex3f(arcx1[i], arcy1[i], 0.0);
-      glVertex3f(arcx1[i+1], arcy1[i+1], 0.0);
-      glVertex3f(arcx2[i+1], arcy2[i+1], 0.0);
-      glVertex3f(arcx2[i], arcy2[i], 0.0);
+      glVertex3f(arcx1[i]*CONV, arcy1[i]*CONV, 0.0);
+      glVertex3f(arcx1[i+1]*CONV, arcy1[i+1]*CONV, 0.0);
+      glVertex3f(arcx2[i+1]*CONV, arcy2[i+1]*CONV, 0.0);
+      glVertex3f(arcx2[i]*CONV, arcy2[i]*CONV, 0.0);
       glEnd();
    }
 
@@ -173,13 +172,13 @@ int robot::drawrobot(float relx, float rely, float reldir) {
 
    glBegin(GL_POLYGON);
    for (i = 0; i < 40; i++) {
-      x = posx*CONV + diameter/2.0*cosf(2*PI*(float)i/40.0) * CONV;
-      y = posy*CONV + diameter/2.0*sinf(2*PI*(float)i/40.0) * CONV;
+      x = posx + diameter/2.0*cosf(2*PI*(float)i/40.0);
+      y = posy + diameter/2.0*sinf(2*PI*(float)i/40.0);
 
       // move circle to its relative position
 
-      x -= relx*CONV;
-      y -= rely*CONV;
+      x -= relx;
+      y -= rely;
 
       // rotate circle to its relative direction
 
@@ -187,16 +186,16 @@ int robot::drawrobot(float relx, float rely, float reldir) {
       y = x*cosf(reldir + 0.5*PI) + y*sinf(reldir + 0.5*PI);
       x = tmp;
 
-      glVertex3f(x, y, 0.0);
+      glVertex3f(x*CONV, y*CONV, 0.0);
    }
    glEnd();
 
-   x1 = -diameter/2.0*sqrt3/2.0 * CONV;
-   y1 = -diameter/2.0*0.6 * CONV;
-   x2 = diameter/2.0*sqrt3/2.0 * CONV;
-   y2 = 0.0 * CONV;
-   x3 = -diameter/2.0*sqrt3/2.0 * CONV;
-   y3 = diameter/2.0*0.6 * CONV;
+   x1 = -diameter/2.0*sqrt3/2.0;
+   y1 = -diameter/2.0*0.6;
+   x2 = diameter/2.0*sqrt3/2.0;
+   y2 = 0.0;
+   x3 = -diameter/2.0*sqrt3/2.0;
+   y3 = diameter/2.0*0.6;
 
    // rotate robot to its direction
 
@@ -212,17 +211,17 @@ int robot::drawrobot(float relx, float rely, float reldir) {
 
    // move robot to its position
 
-   x1 += posx*CONV;
-   y1 += posy*CONV;
-   x2 += posx*CONV;
-   y2 += posy*CONV;
-   x3 += posx*CONV;
-   y3 += posy*CONV;
+   x1 += posx;
+   y1 += posy;
+   x2 += posx;
+   y2 += posy;
+   x3 += posx;
+   y3 += posy;
 
    // move robot to its relative position
 
-   x1 -= relx*CONV; x2 -= relx*CONV; x3 -= relx*CONV;
-   y1 -= rely*CONV; y2 -= rely*CONV; y3 -= rely*CONV;
+   x1 -= relx; x2 -= relx; x3 -= relx;
+   y1 -= rely; y2 -= rely; y3 -= rely;
 
    // rotate robot to its relative direction
 
@@ -240,9 +239,9 @@ int robot::drawrobot(float relx, float rely, float reldir) {
 
    glColor3ub(255, 0, 0);
    glBegin(GL_POLYGON);
-      glVertex3f(x1, y1, 0.0);
-      glVertex3f(x2, y2, 0.0);
-      glVertex3f(x3, y3, 0.0);
+      glVertex3f(x1*CONV, y1*CONV, 0.0);
+      glVertex3f(x2*CONV, y2*CONV, 0.0);
+      glVertex3f(x3*CONV, y3*CONV, 0.0);
    glEnd();
 
 return 0;
