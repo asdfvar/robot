@@ -23,12 +23,15 @@ map *MAP = new map();
 robot rob[N_robots];
 robot *jub = &rob[0];
 int irob = 0;
-int view_mode = 1;
+int view_mode = FREE;
 int control_mode = MAN;
 
+float xview=0.0, yview=0.0, dirview=0.0;
+float xold, yold;
 
 float relx=0.0, rely=0.0, reldir=0.0;
-int windowsizex=600, windowsizey=600;
+int windowsizex=800, windowsizey=800;
+
 
 /********
  * idle *
@@ -55,9 +58,9 @@ void idle(void) {
    }
 
    if (view_mode == FREE) {
-      reldir = 0.0;
-      relx   = 0.0;
-      rely   = 0.0;
+      reldir = dirview;
+      relx   = xview;
+      rely   = yview;
    } else if (view_mode == CNTRFIX) {
       reldir = jub->getdir() - 0.5*PI;
       relx   = jub->getposx();
@@ -157,6 +160,10 @@ void keyboardUp(unsigned char key, int x, int y) {
    }
 }
 
+/***************
+ * mouse click *
+ ***************/
+
 void mouseclick(int button, int state, int x, int y) {
 
 /*
@@ -169,35 +176,62 @@ void mouseclick(int button, int state, int x, int y) {
  * GLUT_DOWN
  */
 
-  std::cout << button << std::endl;
-  std::cout << state << std::endl;
-  std::cout << x << " " << y << std::endl;
+  float xpos, ypos;
+
+  xpos = x - windowsizex/2 + 0.5;
+  xpos /= windowsizex/2/CONV;
+
+  ypos = windowsizex/2 - y + 0.5;
+  ypos /= windowsizey/2/CONV;
 
 }
+
+/****************
+ * mouse motion *
+ ****************/
 
 void mouseMotion(int x, int y) {
 
-  std::cout << "Motion " << x << " " << y << std::endl;
+  float xpos, ypos;
+  float dx,dy;
+
+  xpos = x - windowsizex/2 + 0.5;
+  xpos /= windowsizex/2/CONV;
+
+  ypos = windowsizex/2 - y + 0.5;
+  ypos /= windowsizey/2/CONV;
+
+  dx = xpos - xold;
+  dy = ypos - yold;
+
+  xold = xpos;
+  yold = ypos;
+
+  xview -= dx;
+  yview -= dy;
 
 }
 
-void mousePassive(int x, int y) {
+/************************
+ * passive mouse motion *
+ ************************/
 
-#if 0
-  std::cout << "Passive " << x << " " << y << std::endl;
-#endif
+void mousePassive(int x, int y) {
 
   float xpos, ypos;
 
   xpos = x - windowsizex/2 + 0.5;
-  xpos /= CONV;
+  xpos /= windowsizex/2/CONV;
 
   ypos = windowsizex/2 - y + 0.5;
-  ypos /= CONV;
+  ypos /= windowsizey/2/CONV;
 
   std::cout << "Passive " <<
             xpos << " " <<
             ypos << std::endl;
+
+  xold = xpos;
+  yold = ypos;
 
 }
 
