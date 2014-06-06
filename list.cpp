@@ -7,11 +7,53 @@
 
 class robot;
 
+/***************
+ * Constructor *
+ ***************/
+
 list::list() {
   head = next = prev = 0;
 }
 
-list::~list() {}
+/**************
+ * Destructor *
+ **************/
+
+list::~list() {
+
+  while (head != 0) {
+     delete head;
+     head = next;
+     next = head->next;
+  }
+
+}
+
+/*************
+ * get robot *
+ *************/
+
+robot *list::get_robot() {
+
+  return head;
+
+}
+
+/********
+ * next *
+ ********/
+
+void list::set_next() {
+
+  next = next->next;
+  head = head->next;
+  prev = prev->next;
+
+}
+
+/**********
+ * Append *
+ **********/
 
 void list::append(robot *rob) {
 
@@ -41,6 +83,10 @@ void list::append(robot *rob) {
 
   }
 }
+
+/*********
+ * Print *
+ *********/
 
 void list::print() {
 

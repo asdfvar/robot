@@ -14,7 +14,9 @@ class list {
       list();
       ~list();
 
+      robot *get_robot();
       void append(robot*);
+      void set_next();
       void print();
 
 };

@@ -35,6 +35,7 @@ float xold, yold;
 float relx=0.0, rely=0.0, reldir=0.0;
 int windowsizex=800, windowsizey=800;
 
+list robots;
 
 /********
  * idle *
@@ -46,18 +47,30 @@ void idle(void) {
    float dt;
 
 
+
    if (control_mode == AUT) {
      for (i = 0; i < N_robots; i++) {
+       robots.get_robot()->autonomous();
+       robots.set_next();
+#if 0
        rob[i].autonomous();
+#endif
      }
    }
 
    dt = gettime();
 
    for (i=0; i<N_robots; i++) {
+      robots.get_robot()->update(dt);
+      robots.get_robot()->collide(MAP);
+      robots.get_robot()->getlocalmap(MAP);
+      robots.set_next();
+
+#if 0
       rob[i].update(dt);
       rob[i].collide(MAP);
       rob[i].getlocalmap(MAP);
+#endif
    }
 
    if (view_mode == FREE) {
@@ -65,13 +78,22 @@ void idle(void) {
       relx   = xview;
       rely   = yview;
    } else if (view_mode == CNTRFIX) {
+      reldir = robots.get_robot()->getdir() - 0.5*PI;
+      relx   = robots.get_robot()->getposx();
+      rely   = robots.get_robot()->getposy();
+#if 0
       reldir = jub->getdir() - 0.5*PI;
       relx   = jub->getposx();
       rely   = jub->getposy();
+#endif
    } else if (view_mode == CNTR) {
       reldir = 0.0;
+      relx = robots.get_robot()->getposx();
+      rely = robots.get_robot()->getposy();
+#if 0
       relx   = jub->getposx();
       rely   = jub->getposy();
+#endif
    } else {
       reldir = 0.0;
       relx   = 0.0;
@@ -94,17 +116,31 @@ void move(void){
    MAP->draw(relx, rely, reldir);
 
    for (i=0; i<N_robots; i++) {
-      rob[i].drawrobot(relx, rely, reldir);
 
-if (dbg){
-      #ifdef DEBUG
+      robots.get_robot()->drawrobot(relx, rely, reldir);
+
+#if 0
+      rob[i].drawrobot(relx, rely, reldir);
+#endif
+
+   if (dbg){
+      robots.get_robot()->drawlocalmap(relx, rely, reldir);
+      robots.get_robot()->drawpath(relx, rely, reldir);
+#if 0
       rob[i].drawlocalmap(relx, rely, reldir);
       rob[i].drawpath(relx, rely, reldir);
+#endif
 
       if (control_mode == AUT)
+
+         robots.get_robot()->drawautonomous(relx, rely, reldir);
+
+#if 0
          rob[i].drawautonomous(relx, rely, reldir);
-      #endif
-}
+#endif
+
+   }
+   robots.set_next();
    }
 
    glFlush();
@@ -118,7 +154,10 @@ void keyboardDown(unsigned char key, int x, int y){
 
    extern float CONV;
 
+   robots.get_robot()->move(key);
+#if 0
    jub->move(key);
+#endif
 
    // quit
    if (key == 'q'){
@@ -133,7 +172,10 @@ void keyboardDown(unsigned char key, int x, int y){
    else if (key == 'g')
       view_mode = FREE;
    else if (key == '0')
+      robots.get_robot()->setposxy(0.0, 0.0, 0.0);
+#if 0
       jub->setposxy(0.0, 0.0, 0.0);
+#endif
    else if (key == 't')
       jub = &rob[++irob % N_robots];
    else if (key == 'T') {
@@ -166,7 +208,11 @@ void keyboardUp(unsigned char key, int x, int y) {
    int i;
 
    for (i=0; i<N_robots; i++) {
+
+      robots.get_robot()->unmove(key);
+#if 0
       jub->unmove(key);
+#endif
    }
 }
 
@@ -279,8 +325,8 @@ int main(int argc, char** argv){
 
    rob[0].setposxy(0.0, 0.0, 0.0);
 
-   list robots;
 
+   robots.append(new robot);
    robots.append(new robot);
    robots.append(new robot);
    robots.append(new robot);
