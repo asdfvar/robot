@@ -10,6 +10,7 @@
 #include <time.h>
 #include "avoidance.h"
 #include "constants.h"
+#include "list.h"
 
 float CONV = 1.0; // conversion from meters to screen units
 
@@ -277,6 +278,13 @@ int main(int argc, char** argv){
    MAP->loadcircles(cx, cy, rad, 1);
 
    rob[0].setposxy(0.0, 0.0, 0.0);
+
+   list robots;
+
+   robots.append(new robot);
+   robots.append(new robot);
+   robots.append(new robot);
+   robots.print();
 
    glutInit(&argc, argv);
    glutInitDisplayMode(GLUT_RGB|GLUT_SINGLE);

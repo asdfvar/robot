@@ -15,6 +15,8 @@ enum {FREE=0, CNTR, CNTRFIX};
 class robot{
    public:
 
+      robot *prev, *next;
+
      /****************
       * Constructors *
       ****************/

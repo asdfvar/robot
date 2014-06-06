@@ -5,7 +5,8 @@ LINK = -lm -lGL -lGLU -lglut
 OBJ = main.o robot.o update.o map.o \
       drawmap.o drawrobot.o loadmap.o \
       collide.o gettime.o distance.o \
-      localmap.o avoidance.o autonomous.o
+      localmap.o avoidance.o autonomous.o \
+      list.o
 
 EXE = robot
 

@@ -1,6 +1,8 @@
 #include "robot.h"
 
 robot::robot(float position_x, float position_y, float direction){
+   prev = this;
+   next = this;
    posx  = position_x;
    posy  = position_y;
    dir   = direction;
@@ -18,6 +20,8 @@ robot::robot(float position_x, float position_y, float direction){
 }
 
 robot::robot(){
+   prev = this;
+   next = this;
    posx  = 0.0f;
    posy  = 0.0f;
    dir   = 0.0f;
