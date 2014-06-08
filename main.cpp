@@ -42,6 +42,10 @@ void idle(void) {
    int i;
    float dt;
 
+std::cout << robots.get_robot()->prev <<
+  " " << robots.get_robot() << " " <<
+  robots.get_robot()->next << std::endl;
+
    if (control_mode == AUT) {
      for (i = 0; i < robots.N; i++) {
        robots.get_robot()->autonomous();

@@ -9,7 +9,10 @@ class list {
 
    public:
 
+#if 0
       robot *prev, *head, *next;
+      robot *head;
+#endif
       int N;
 
       list();
@@ -22,6 +25,10 @@ class list {
       void set_next();
       void set_prev();
       void print();
+
+  private:
+
+    robot *head;
 
 };
 
