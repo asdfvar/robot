@@ -6,16 +6,16 @@
 
 float gettime(void) {
 
-   static bool init = true;
+   static bool init = false;
    static struct timeval start, end;
    static float sumtime = 0.0;
    static int Nsum = 0;
    float dt;
 
-   if (init) {
+   if (!init) {
       gettimeofday(&start, NULL);
       gettimeofday(&end,   NULL);
-      init = false;
+      init = true;
    }
 
    // update the delta time dt

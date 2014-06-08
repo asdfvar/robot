@@ -14,17 +14,13 @@
 
 float CONV = 1.0; // conversion from meters to screen units
 
-#define DEBUG
 bool dbg = false;
 
 enum {MAN, AUT};
 
 float gettime(void);
 
-#define N_robots 4
 map *MAP = new map();
-robot rob[N_robots];
-robot *jub = &rob[0];
 int irob = 0;
 int view_mode = FREE;
 int control_mode = MAN;
@@ -46,31 +42,20 @@ void idle(void) {
    int i;
    float dt;
 
-
-
    if (control_mode == AUT) {
-     for (i = 0; i < N_robots; i++) {
+     for (i = 0; i < robots.N; i++) {
        robots.get_robot()->autonomous();
        robots.set_next();
-#if 0
-       rob[i].autonomous();
-#endif
      }
    }
 
    dt = gettime();
 
-   for (i=0; i<N_robots; i++) {
+   for (i=0; i<robots.N; i++) {
       robots.get_robot()->update(dt);
       robots.get_robot()->collide(MAP);
       robots.get_robot()->getlocalmap(MAP);
       robots.set_next();
-
-#if 0
-      rob[i].update(dt);
-      rob[i].collide(MAP);
-      rob[i].getlocalmap(MAP);
-#endif
    }
 
    if (view_mode == FREE) {
@@ -81,19 +66,10 @@ void idle(void) {
       reldir = robots.get_robot()->getdir() - 0.5*PI;
       relx   = robots.get_robot()->getposx();
       rely   = robots.get_robot()->getposy();
-#if 0
-      reldir = jub->getdir() - 0.5*PI;
-      relx   = jub->getposx();
-      rely   = jub->getposy();
-#endif
    } else if (view_mode == CNTR) {
       reldir = 0.0;
       relx = robots.get_robot()->getposx();
       rely = robots.get_robot()->getposy();
-#if 0
-      relx   = jub->getposx();
-      rely   = jub->getposy();
-#endif
    } else {
       reldir = 0.0;
       relx   = 0.0;
@@ -115,29 +91,17 @@ void move(void){
 
    MAP->draw(relx, rely, reldir);
 
-   for (i=0; i<N_robots; i++) {
+   for (i=0; i<robots.N; i++) {
 
       robots.get_robot()->drawrobot(relx, rely, reldir);
-
-#if 0
-      rob[i].drawrobot(relx, rely, reldir);
-#endif
 
    if (dbg){
       robots.get_robot()->drawlocalmap(relx, rely, reldir);
       robots.get_robot()->drawpath(relx, rely, reldir);
-#if 0
-      rob[i].drawlocalmap(relx, rely, reldir);
-      rob[i].drawpath(relx, rely, reldir);
-#endif
 
       if (control_mode == AUT)
 
          robots.get_robot()->drawautonomous(relx, rely, reldir);
-
-#if 0
-         rob[i].drawautonomous(relx, rely, reldir);
-#endif
 
    }
    robots.set_next();
@@ -155,9 +119,6 @@ void keyboardDown(unsigned char key, int x, int y){
    extern float CONV;
 
    robots.get_robot()->move(key);
-#if 0
-   jub->move(key);
-#endif
 
    // quit
    if (key == 'q'){
@@ -173,16 +134,15 @@ void keyboardDown(unsigned char key, int x, int y){
       view_mode = FREE;
    else if (key == '0')
       robots.get_robot()->setposxy(0.0, 0.0, 0.0);
-#if 0
-      jub->setposxy(0.0, 0.0, 0.0);
-#endif
    else if (key == 't')
-      jub = &rob[++irob % N_robots];
-   else if (key == 'T') {
-      --irob;
-      if (irob < 0) {irob += N_robots;}
-      jub = &rob[irob % N_robots];
-   } else if (key == 'o')
+      robots.set_next();
+   else if (key == 'T')
+      robots.set_prev();
+   else if (key == 'n')
+      robots.append(new robot);
+   else if (key == 'b')
+      robots.remove();
+   else if (key == 'o')
       dbg = 1 - dbg;
 
    if (key == 'A')
@@ -207,12 +167,9 @@ void keyboardUp(unsigned char key, int x, int y) {
 
    int i;
 
-   for (i=0; i<N_robots; i++) {
+   for (i=0; i<robots.N; i++) {
 
       robots.get_robot()->unmove(key);
-#if 0
-      jub->unmove(key);
-#endif
    }
 }
 
@@ -323,12 +280,6 @@ int main(int argc, char** argv){
 
    MAP->loadcircles(cx, cy, rad, 1);
 
-   rob[0].setposxy(0.0, 0.0, 0.0);
-
-
-   robots.append(new robot);
-   robots.append(new robot);
-   robots.append(new robot);
    robots.append(new robot);
    robots.print();
 

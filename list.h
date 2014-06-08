@@ -10,13 +10,16 @@ class list {
    public:
 
       robot *prev, *head, *next;
+      int N;
 
       list();
       ~list();
 
       robot *get_robot();
       void append(robot*);
+      void remove();
       void set_next();
+      void set_prev();
       void print();
 
 };

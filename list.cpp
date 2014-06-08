@@ -13,6 +13,7 @@ class robot;
 
 list::list() {
   head = next = prev = 0;
+  N = 0;
 }
 
 /**************
@@ -51,11 +52,21 @@ void list::set_next() {
 
 }
 
+void list::set_prev() {
+
+  next = head;
+  head = prev;
+  prev = head->prev;
+
+}
+
 /**********
  * Append *
  **********/
 
 void list::append(robot *rob) {
+
+  N++;
 
   if (head == 0) {
 
@@ -82,6 +93,27 @@ void list::append(robot *rob) {
     next = rob->next;
 
   }
+}
+
+/**********
+ * remove *
+ **********/
+
+void list::remove() {
+
+  robot *rob = head;
+
+  N--;
+
+  head = prev;
+  prev = head->prev;
+  head->next = next;
+
+  delete rob;
+
+  std::cout << "deleted "
+    << rob << std::endl;
+
 }
 
 /*********
