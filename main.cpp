@@ -123,6 +123,8 @@ void keyboardDown(unsigned char key, int x, int y){
    // quit
    if (key == 'q'){
       delete MAP;
+      MAP = 0;
+      robots.clear();
       std::cout << "program exit" << std::endl;
       exit(1);
    }

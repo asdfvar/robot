@@ -22,10 +22,11 @@ list::list() {
 
 list::~list() {
 
-  while (head != 0) {
+  while (N > 0) {
      delete head;
      head = next;
      next = head->next;
+     N--;
   }
 
 }
@@ -101,6 +102,9 @@ void list::append(robot *rob) {
 
 void list::remove() {
 
+  if (N <= 0)
+    return;
+
   robot *rob = head;
 
   N--;
@@ -112,7 +116,24 @@ void list::remove() {
   delete rob;
 
   std::cout << "deleted "
-    << rob << std::endl;
+    << rob << " next="
+    << next << " head="
+    << head << " prev="
+    << prev << std::endl;
+
+}
+
+/*********
+ * clear *
+ *********/
+
+void list::clear() {
+
+  while (N > 0) {
+
+    this->remove();
+
+  }
 
 }
 

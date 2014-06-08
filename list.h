@@ -18,6 +18,7 @@ class list {
       robot *get_robot();
       void append(robot*);
       void remove();
+      void clear();
       void set_next();
       void set_prev();
       void print();
