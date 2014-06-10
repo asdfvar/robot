@@ -3,7 +3,7 @@
  */
 
 #include "robot.h"
-#include <math.h>
+#include <cmath>
 #include <iostream>
 #include <GL/glut.h>
 #include <GL/glu.h>

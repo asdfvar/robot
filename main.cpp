@@ -12,6 +12,8 @@
 #include "constants.h"
 #include "list.h"
 
+void identifier(float x, float y, float diameter);
+
 float CONV = 1.0; // conversion from meters to screen units
 
 bool dbg = false;
@@ -31,7 +33,7 @@ float xold, yold;
 float relx=0.0, rely=0.0, reldir=0.0;
 int windowsizex=800, windowsizey=800;
 
-list robots;
+list jub;
 
 /********
  * idle *
@@ -42,24 +44,20 @@ void idle(void) {
    int i;
    float dt;
 
-std::cout << robots.get_robot()->prev <<
-  " " << robots.get_robot() << " " <<
-  robots.get_robot()->next << std::endl;
-
    if (control_mode == AUT) {
-     for (i = 0; i < robots.N; i++) {
-       robots.get_robot()->autonomous();
-       robots.set_next();
+     for (i = 0; i < jub.N; i++) {
+       jub.get_robot()->autonomous();
+       jub.set_next();
      }
    }
 
    dt = gettime();
 
-   for (i=0; i<robots.N; i++) {
-      robots.get_robot()->update(dt);
-      robots.get_robot()->collide(MAP);
-      robots.get_robot()->getlocalmap(MAP);
-      robots.set_next();
+   for (i=0; i<jub.N; i++) {
+      jub.get_robot()->update(dt);
+      jub.get_robot()->collide(MAP);
+      jub.get_robot()->getlocalmap(MAP);
+      jub.set_next();
    }
 
    if (view_mode == FREE) {
@@ -67,13 +65,13 @@ std::cout << robots.get_robot()->prev <<
       relx   = xview;
       rely   = yview;
    } else if (view_mode == CNTRFIX) {
-      reldir = robots.get_robot()->getdir() - 0.5*PI;
-      relx   = robots.get_robot()->getposx();
-      rely   = robots.get_robot()->getposy();
+      reldir = jub.get_robot()->getdir() - 0.5*PI;
+      relx   = jub.get_robot()->getposx();
+      rely   = jub.get_robot()->getposy();
    } else if (view_mode == CNTR) {
       reldir = 0.0;
-      relx = robots.get_robot()->getposx();
-      rely = robots.get_robot()->getposy();
+      relx = jub.get_robot()->getposx();
+      rely = jub.get_robot()->getposy();
    } else {
       reldir = 0.0;
       relx   = 0.0;
@@ -95,20 +93,32 @@ void move(void){
 
    MAP->draw(relx, rely, reldir);
 
-   for (i=0; i<robots.N; i++) {
+   // draw the circle around the robot
 
-      robots.get_robot()->drawrobot(relx, rely, reldir);
+   if (view_mode == CNTR)
+     identifier(0.0, 0.0, 0.125);
+   else if (view_mode == CNTRFIX)
+     identifier(0.0, 0.0, 0.125);
+   else if (view_mode == FREE)
+     identifier(
+       jub.get_robot()->getposx(),
+       jub.get_robot()->getposy(),
+       0.125);
+
+   for (i=0; i<jub.N; i++) {
+
+      jub.get_robot()->drawrobot(relx, rely, reldir);
 
    if (dbg){
-      robots.get_robot()->drawlocalmap(relx, rely, reldir);
-      robots.get_robot()->drawpath(relx, rely, reldir);
+      jub.get_robot()->drawlocalmap(relx, rely, reldir);
+      jub.get_robot()->drawpath(relx, rely, reldir);
 
       if (control_mode == AUT)
 
-         robots.get_robot()->drawautonomous(relx, rely, reldir);
+         jub.get_robot()->drawautonomous(relx, rely, reldir);
 
    }
-   robots.set_next();
+   jub.set_next();
    }
 
    glFlush();
@@ -122,45 +132,58 @@ void keyboardDown(unsigned char key, int x, int y){
 
    extern float CONV;
 
-   robots.get_robot()->move(key);
+   jub.get_robot()->move(key);
 
    // quit
-   if (key == 'q'){
+switch (key) {
+   case 'q':
       delete MAP;
       MAP = 0;
-      robots.clear();
+      jub.clear();
       std::cout << "program exit" << std::endl;
       exit(1);
-   }
-   else if (key == 'C')
+      break;
+   case 'C':
       view_mode = CNTRFIX;
-   else if (key == 'c')
+      break;
+   case 'c':
       view_mode = CNTR;
-   else if (key == 'g')
+      break;
+   case 'g':
       view_mode = FREE;
-   else if (key == '0')
-      robots.get_robot()->setposxy(0.0, 0.0, 0.0);
-   else if (key == 't')
-      robots.set_next();
-   else if (key == 'T')
-      robots.set_prev();
-   else if (key == 'n')
-      robots.append(new robot);
-   else if (key == 'b')
-      robots.remove();
-   else if (key == 'o')
+      break;
+   case '0':
+      jub.get_robot()->setposxy(0.0, 0.0, 0.0);
+      break;
+   case 't':
+      jub.set_next();
+      break;
+   case 'T':
+      jub.set_prev();
+      break;
+   case 'n':
+      jub.append(new robot);
+      break;
+   case 'b':
+      jub.remove();
+      break;
+   case 'o':
       dbg = 1 - dbg;
-
-   if (key == 'A')
+      break;
+   case 'A':
       control_mode = AUT;
-   else if (key == 'M')
+      break;
+   case 'M':
       control_mode = MAN;
-
-   if (key == '-')
+      break;
+   case '-':
       CONV -= 0.2;
-      if (CONV < 0.0) CONV = 0.0;
-   else if (key == '=')
+      if (CONV < 0.01) CONV = 0.01;
+      break;
+   case '=':
       CONV += 0.2;
+      break;
+}
 
 }
 
@@ -173,9 +196,9 @@ void keyboardUp(unsigned char key, int x, int y) {
 
    int i;
 
-   for (i=0; i<robots.N; i++) {
+   for (i=0; i<jub.N; i++) {
 
-      robots.get_robot()->unmove(key);
+      jub.get_robot()->unmove(key);
    }
 }
 
@@ -208,7 +231,7 @@ void mouseclick(int button, int state, int x, int y) {
      CONV += 0.05;
   else if (button == 4) {
      CONV -= 0.05;
-     if (CONV < 0.0) CONV = 0.0;
+     if (CONV < 0.01) CONV = 0.01;
   }
 
 }
@@ -286,8 +309,8 @@ int main(int argc, char** argv){
 
    MAP->loadcircles(cx, cy, rad, 1);
 
-   robots.append(new robot);
-   robots.print();
+   jub.append(new robot);
+   jub.print();
 
    glutInit(&argc, argv);
    glutInitDisplayMode(GLUT_RGB|GLUT_SINGLE);
