@@ -85,8 +85,8 @@ void idle(void) {
  * move *
  ********/
 
-void move(void){
-
+void move(void)
+{
    int i;
 
    glClear(GL_COLOR_BUFFER_BIT);
@@ -121,7 +121,7 @@ void move(void){
    jub.set_next();
    }
 
-   glFlush();
+   glutSwapBuffers ();
 }
 
 /*****************
@@ -313,7 +313,7 @@ int main(int argc, char** argv){
    jub.print();
 
    glutInit(&argc, argv);
-   glutInitDisplayMode(GLUT_RGB|GLUT_SINGLE);
+   glutInitDisplayMode (GLUT_RGB | GLUT_DOUBLE);
    glutInitWindowSize(windowsizex, windowsizey);
    glutInitWindowPosition(50, 50);
    glutCreateWindow("Robut");
